@@ -1,3 +1,16 @@
 # 应用服务 WEB 访问端口
-server.port=8080
+server:
+    port: 8080
+spring:
+  datasource:
+    #MySQL配置
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://8.152.219.128:3306/quanyoumall_sms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+mybatis-plus:
+  mapper-locations: classpath:com/wzy/quanyoumall/coupon/mapper/impl/*.xml
+  global-config:
+    db-config:
+      id-type: auto
 
