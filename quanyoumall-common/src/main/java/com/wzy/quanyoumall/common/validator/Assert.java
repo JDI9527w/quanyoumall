@@ -8,7 +8,7 @@
 
 package com.wzy.quanyoumall.common.validator;
 
-import io.renren.common.exception.RRException;
+import com.wzy.quanyoumall.common.exception.RRException;
 import org.apache.commons.lang.StringUtils;
 
 /**

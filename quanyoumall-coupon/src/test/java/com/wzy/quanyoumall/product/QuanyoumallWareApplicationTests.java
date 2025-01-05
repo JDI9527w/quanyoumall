@@ -1,4 +1,4 @@
-package com.wzy.quanyoumall.ware;
+package com.wzy.quanyoumall.product;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -16,7 +16,6 @@
         <module>quanyoumall-order</module>
         <module>renren-fast</module>
         <module>quanyoumall-common</module>
-        <module>renren-generator</module>
     </modules>
 <!--   <properties>
         <java.version>1.8</java.version>
