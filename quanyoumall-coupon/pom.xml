@@ -28,7 +28,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -59,7 +58,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <build>
         <plugins>
             <plugin>
@@ -77,7 +75,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.wzy.quanyoumall.product.QuanyoumallWareApplication</mainClass>
+                    <mainClass>com.wzy.quanyoumall.product.QuanyoumallCouponApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>
