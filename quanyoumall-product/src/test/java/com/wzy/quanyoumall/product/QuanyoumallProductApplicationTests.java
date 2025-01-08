@@ -20,4 +20,9 @@ class QuanyoumallProductApplicationTests {
         System.out.println("save = " + save);
     }
 
+    @Test
+    void categoryTree(){
+
+    }
+
 }

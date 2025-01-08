@@ -2,8 +2,10 @@ package com.wzy.quanyoumall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wzy.quanyoumall.common.utils.PageUtils;
+import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.product.entity.CategoryEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +18,9 @@ import java.util.Map;
 public interface CategoryService extends IService<CategoryEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    R treeSelectCategory();
+
+    R removeByIds(List<Long> ids);
 }
 

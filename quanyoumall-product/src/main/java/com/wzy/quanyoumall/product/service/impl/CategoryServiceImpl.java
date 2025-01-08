@@ -1,16 +1,19 @@
 package com.wzy.quanyoumall.product.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wzy.quanyoumall.common.utils.PageUtils;
 import com.wzy.quanyoumall.common.utils.Query;
-
-import com.wzy.quanyoumall.product.mapper.CategoryMapper;
+import com.wzy.quanyoumall.common.utils.R;
+import com.wzy.quanyoumall.common.utils.TreeUtil;
 import com.wzy.quanyoumall.product.entity.CategoryEntity;
+import com.wzy.quanyoumall.product.mapper.CategoryMapper;
 import com.wzy.quanyoumall.product.service.CategoryService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -26,4 +29,19 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
         return new PageUtils(page);
     }
 
+    @Override
+    public R treeSelectCategory() {
+        List<CategoryEntity> categoryEntities = baseMapper.selectList(new QueryWrapper<>());
+        List<CategoryEntity> treeCatetory = TreeUtil.makeTree(categoryEntities,
+                category -> category.getCatLevel().equals(1),
+                (a, b) -> a.getCatId().equals(b.getParentCid()), CategoryEntity::setChildrenCategory);
+        return R.ok().put("treeCategory",treeCatetory);
+    }
+
+    @Override
+    public R removeByIds(List<Long> ids) {
+        // TODO:check有无商品关联.
+        int i = baseMapper.deleteBatchIds(ids);
+        return R.ok();
+    }
 }

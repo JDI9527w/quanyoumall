@@ -1,11 +1,13 @@
 spring:
+    application:
+      name: renren-fast
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         druid:
             driver-class-name: com.mysql.cj.jdbc.Driver
             url: jdbc:mysql://8.152.219.128:3306/quanyoumall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
             username: root
-            password: root
+            password:
             initial-size: 10
             max-active: 100
             min-idle: 10
@@ -32,6 +34,12 @@ spring:
                 wall:
                     config:
                         multi-statement-allow: true
+    cloud:
+      nacos:
+        discovery:
+            server-addr: localhost:8848
+            username:
+            password:
     redis:
         open: false  # 是否开启redis缓存  true开启   false关闭
         database: 0

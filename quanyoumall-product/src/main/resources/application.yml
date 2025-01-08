@@ -3,14 +3,25 @@ server:
   port: 8083
 
 spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        username:
+        password:
   datasource:
     #MySQL配置
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://8.152.219.128:3306/quanyoumall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: root
+    password:
 mybatis-plus:
   mapper-locations: classpath:com/wzy/quanyoumall/product/mapper/impl/*.xml
   global-config:
     db-config:
       id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+logging:
+  level:
+    com.wzy.quanyoumall: debug
