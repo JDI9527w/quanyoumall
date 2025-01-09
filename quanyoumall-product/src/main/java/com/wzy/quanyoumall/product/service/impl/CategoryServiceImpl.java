@@ -20,22 +20,12 @@ import java.util.Map;
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEntity> implements CategoryService {
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<CategoryEntity> page = this.page(
-                new Query<CategoryEntity>().getPage(params),
-                new QueryWrapper<CategoryEntity>()
-        );
-
-        return new PageUtils(page);
-    }
-
-    @Override
     public R treeSelectCategory() {
-        List<CategoryEntity> categoryEntities = baseMapper.selectList(new QueryWrapper<>());
+        List<CategoryEntity> categoryEntities = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("show_status","1"));
         List<CategoryEntity> treeCatetory = TreeUtil.makeTree(categoryEntities,
                 category -> category.getCatLevel().equals(1),
                 (a, b) -> a.getCatId().equals(b.getParentCid()), CategoryEntity::setChildrenCategory);
-        return R.ok().put("treeCategory",treeCatetory);
+        return R.ok().put("data",treeCatetory);
     }
 
     @Override
