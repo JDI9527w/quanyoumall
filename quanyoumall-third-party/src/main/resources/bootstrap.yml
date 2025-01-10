@@ -1,0 +1,15 @@
+server:
+  port: 8086
+spring:
+  application:
+      name: quanyoumall-third-party
+  cloud:
+      nacos:
+          config:
+              server-addr: localhost:8848
+              username: nacos
+              password: nacos
+              namespace: # 指定配置文件所在的命名中心
+              group: # 指定配置文件所在的组
+              prefix: # 指定读取的配置文件名称
+              file-extension: yml # 指定读取的配置文件类型.
