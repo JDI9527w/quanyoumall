@@ -1,23 +1,22 @@
 package com.wzy.quanyoumall.product.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
+import com.wzy.quanyoumall.common.utils.PageUtils;
+import com.wzy.quanyoumall.common.utils.R;
+import com.wzy.quanyoumall.product.entity.BrandEntity;
+import com.wzy.quanyoumall.product.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.wzy.quanyoumall.product.entity.BrandEntity;
-import com.wzy.quanyoumall.product.service.BrandService;
-import com.wzy.quanyoumall.common.utils.PageUtils;
-import com.wzy.quanyoumall.common.utils.R;
-
+import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.Map;
 
 
 /**
  * 品牌
  *
  * @author wzy
- * @email 
+ * @email
  * @date 2025-01-05 18:48:48
  */
 @RestController
@@ -30,7 +29,7 @@ public class BrandController {
      * 列表
      */
     @GetMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = brandService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -41,8 +40,8 @@ public class BrandController {
      * 信息
      */
     @GetMapping("/info/{brandId}")
-    public R info(@PathVariable("brandId") Long brandId){
-		BrandEntity brand = brandService.getById(brandId);
+    public R info(@PathVariable("brandId") Long brandId) {
+        BrandEntity brand = brandService.getById(brandId);
 
         return R.ok().put("brand", brand);
     }
@@ -51,8 +50,8 @@ public class BrandController {
      * 保存
      */
     @PostMapping("/save")
-    public R save(@RequestBody BrandEntity brand){
-		brandService.save(brand);
+    public R save(@Valid @RequestBody BrandEntity brand) {
+        brandService.save(brand);
 
         return R.ok();
     }
@@ -61,8 +60,8 @@ public class BrandController {
      * 修改
      */
     @PutMapping("/update")
-    public R update(@RequestBody BrandEntity brand){
-		brandService.updateById(brand);
+    public R update(@RequestBody BrandEntity brand) {
+        brandService.updateById(brand);
 
         return R.ok();
     }
@@ -71,8 +70,8 @@ public class BrandController {
      * 删除
      */
     @DeleteMapping("/delete")
-    public R delete(@RequestBody Long[] brandIds){
-		brandService.removeByIds(Arrays.asList(brandIds));
+    public R delete(@RequestBody Long[] brandIds) {
+        brandService.removeByIds(Arrays.asList(brandIds));
 
         return R.ok();
     }
