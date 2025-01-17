@@ -28,6 +28,8 @@ public class productExceptionAdvice {
 
     @ExceptionHandler(value = Throwable.class)
     public R handleExceptionb(Exception e) {
+        e.getStackTrace();
+        log.error(e.getMessage(), e.getStackTrace(), e.getClass());
         return R.error(bizCodeEnum.UNKNOW_EXCEPTION.getCode(), bizCodeEnum.UNKNOW_EXCEPTION.getMsg());
     }
 }

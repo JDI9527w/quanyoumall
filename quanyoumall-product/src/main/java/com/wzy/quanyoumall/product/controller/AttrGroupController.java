@@ -1,27 +1,23 @@
 package com.wzy.quanyoumall.product.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.product.entity.AttrGroupEntity;
 import com.wzy.quanyoumall.product.service.AttrGroupService;
-import com.wzy.quanyoumall.common.utils.PageUtils;
-import com.wzy.quanyoumall.common.utils.R;
+import com.wzy.quanyoumall.product.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
  * 属性分组
  *
  * @author wzy
- * @email 
+ * @email
  * @date 2025-01-05 18:48:48
  */
 @RestController
@@ -30,24 +26,30 @@ public class AttrGroupController {
     @Autowired
     private AttrGroupService attrGroupService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     /**
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = attrGroupService.queryPage(params);
-
-        return R.ok().put("page", page);
+    public R list(AttrGroupEntity attrGroup,
+                  @RequestParam Integer pageNum,
+                  @RequestParam Integer pageSize) {
+        Page<AttrGroupEntity> page = new Page<>(pageNum, pageSize);
+        Page<AttrGroupEntity> attrGroupEntityPage = attrGroupService.queryPage(page, attrGroup);
+        return R.ok().put("data", attrGroupEntityPage);
     }
-
 
     /**
      * 信息
      */
     @RequestMapping("/info/{attrGroupId}")
-    public R info(@PathVariable("attrGroupId") Long attrGroupId){
-		AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
-
+    public R info(@PathVariable("attrGroupId") Long attrGroupId) {
+        AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
+        List<Long> catelogPath = categoryService.queryLevelCidsBycatelogId(attrGroup.getCatelogId());
+        Collections.reverse(catelogPath);
+        attrGroup.setCatelogPath(catelogPath);
         return R.ok().put("attrGroup", attrGroup);
     }
 
@@ -55,8 +57,8 @@ public class AttrGroupController {
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody AttrGroupEntity attrGroup){
-		attrGroupService.save(attrGroup);
+    public R save(@RequestBody AttrGroupEntity attrGroup) {
+        attrGroupService.save(attrGroup);
 
         return R.ok();
     }
@@ -65,8 +67,8 @@ public class AttrGroupController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody AttrGroupEntity attrGroup){
-		attrGroupService.updateById(attrGroup);
+    public R update(@RequestBody AttrGroupEntity attrGroup) {
+        attrGroupService.updateById(attrGroup);
 
         return R.ok();
     }
@@ -75,8 +77,8 @@ public class AttrGroupController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] attrGroupIds){
-		attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
+    public R delete(@RequestBody Long[] attrGroupIds) {
+        attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
 
         return R.ok();
     }

@@ -1,6 +1,6 @@
 package com.wzy.quanyoumall.product.controller;
 
-import com.wzy.quanyoumall.common.utils.PageUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.product.entity.BrandEntity;
 import com.wzy.quanyoumall.product.service.BrandService;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Arrays;
-import java.util.Map;
 
 
 /**
@@ -29,10 +28,12 @@ public class BrandController {
      * 列表
      */
     @GetMapping("/list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = brandService.queryPage(params);
-
-        return R.ok().put("page", page);
+    public R list(BrandEntity brandEntity,
+                  @RequestParam Integer pageNum,
+                  @RequestParam Integer pageSize) {
+        Page<BrandEntity> page = new Page<>(pageNum, pageSize);
+        Page<BrandEntity> result = brandService.queryPage(page, brandEntity);
+        return R.ok().put("data", result);
     }
 
 
@@ -61,7 +62,7 @@ public class BrandController {
      */
     @PutMapping("/update")
     public R update(@RequestBody BrandEntity brand) {
-        brandService.updateById(brand);
+        brandService.updateAndThen(brand);
 
         return R.ok();
     }

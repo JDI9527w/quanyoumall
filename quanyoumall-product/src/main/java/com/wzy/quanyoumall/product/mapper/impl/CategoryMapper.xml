@@ -15,6 +15,23 @@
         <result property="productUnit" column="product_unit"/>
         <result property="productCount" column="product_count"/>
     </resultMap>
+    <select id="queryLevelCidsBycatelogId" resultType="java.lang.Long">
+        with recursive cte as
+           (
+               select cat_id, parent_cid
+               from pms_category
+               where cat_id = #{catelogId}
+
+               union all
+
+               select pc.cat_id, pc.parent_cid
+               from pms_category pc
+                join cte cte
+                on pc.cat_id = cte.parent_cid
+           )
+        select cat_id
+        from cte
+    </select>
 
 
 </mapper>

@@ -56,8 +56,7 @@ public class CategoryController {
      */
     @PutMapping("/update")
     public R update(@RequestBody CategoryEntity category) {
-        categoryService.updateById(category);
-
+        categoryService.updateAndThen(category);
         return R.ok();
     }
 
