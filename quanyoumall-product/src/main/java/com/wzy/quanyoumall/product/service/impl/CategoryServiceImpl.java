@@ -8,10 +8,13 @@ import com.wzy.quanyoumall.product.entity.CategoryEntity;
 import com.wzy.quanyoumall.product.mapper.CategoryMapper;
 import com.wzy.quanyoumall.product.service.CategoryBrandRelationService;
 import com.wzy.quanyoumall.product.service.CategoryService;
+import com.wzy.quanyoumall.product.vo.CategoryVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,7 +26,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
     @Override
     public R treeSelectCategory() {
         List<CategoryEntity> categoryEntities = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("show_status", "1"));
-        List<CategoryEntity> treeCatetory = TreeUtil.makeTree(categoryEntities,
+        List<CategoryEntity> treeCatetory =  TreeUtil.makeTree(categoryEntities,
                 category -> category.getCatLevel().equals(1),
                 (a, b) -> a.getCatId().equals(b.getParentCid()), CategoryEntity::setChildrenCategory);
         return R.ok().put("data", treeCatetory);

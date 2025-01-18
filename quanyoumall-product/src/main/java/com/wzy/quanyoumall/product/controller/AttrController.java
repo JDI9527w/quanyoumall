@@ -1,27 +1,22 @@
 package com.wzy.quanyoumall.product.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wzy.quanyoumall.common.constant.ProductConstant;
+import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.product.entity.AttrEntity;
 import com.wzy.quanyoumall.product.service.AttrService;
-import com.wzy.quanyoumall.common.utils.PageUtils;
-import com.wzy.quanyoumall.common.utils.R;
+import com.wzy.quanyoumall.product.vo.AttrVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 /**
  * 商品属性
  *
  * @author wzy
- * @email 
+ * @email
  * @date 2025-01-05 18:48:48
  */
 @RestController
@@ -31,53 +26,63 @@ public class AttrController {
     private AttrService attrService;
 
     /**
-     * 列表
+     *  列表查询
+     * @param attrEntity 查询参数封装对象
+     * @param selectType 查询类型
+     * @param pageNum   页码
+     * @param pageSize  页大小
+     * @return
      */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = attrService.queryPage(params);
-
-        return R.ok().put("page", page);
+    @GetMapping("/{selectType}/list")
+    public R list(AttrEntity attrEntity,
+                  @PathVariable String selectType,
+                  @RequestParam Integer pageNum,
+                  @RequestParam Integer pageSize) {
+        Page<AttrEntity> page = new Page<>(pageNum, pageSize);
+        Integer selectAttrType = null;
+        if (selectType.equals("base")){
+            selectAttrType = ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode();
+        } else if (selectType.equals("sale")) {
+            selectAttrType = ProductConstant.AttrEnum.ATTR_TYPE_SALE.getCode();
+        }
+        Page<AttrVo> result = attrService.queryPage(page, attrEntity,selectAttrType);
+        return R.ok().put("data", result);
     }
 
 
     /**
      * 信息
      */
-    @RequestMapping("/info/{attrId}")
-    public R info(@PathVariable("attrId") Long attrId){
-		AttrEntity attr = attrService.getById(attrId);
-
-        return R.ok().put("attr", attr);
+    @GetMapping("/info/{attrId}")
+    public R info(@PathVariable("attrId") Long attrId) {
+        AttrVo av = attrService.getDetailById(attrId);
+        return R.ok().put("data", av);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody AttrEntity attr){
-		attrService.save(attr);
-
+    @PostMapping("/save")
+    public R save(@RequestBody AttrVo attrVo) {
+        attrService.saveAndThen(attrVo);
         return R.ok();
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    public R update(@RequestBody AttrEntity attr){
-		attrService.updateById(attr);
-
+    @PutMapping("/update")
+    public R update(@RequestBody AttrVo attrVo) {
+        attrService.updateByIdAndThen(attrVo);
         return R.ok();
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] attrIds){
-		attrService.removeByIds(Arrays.asList(attrIds));
-
+    @DeleteMapping("/delete")
+    public R delete(@RequestBody List<Long> attrIds) {
+        attrService.removeByIdsAndThen(attrIds);
         return R.ok();
     }
 

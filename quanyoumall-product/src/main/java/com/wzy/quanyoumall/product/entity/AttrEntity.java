@@ -37,6 +37,10 @@ public class AttrEntity implements Serializable {
 	 */
 	private String icon;
 	/**
+	 * 值类型[0-单个值,1-可以选择多个值]
+	 */
+	private Integer valueType;
+	/**
 	 * 可选值列表[用逗号分隔]
 	 */
 	private String valueSelect;

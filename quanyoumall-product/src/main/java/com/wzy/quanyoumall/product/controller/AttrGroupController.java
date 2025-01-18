@@ -2,9 +2,13 @@ package com.wzy.quanyoumall.product.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.utils.R;
+import com.wzy.quanyoumall.product.entity.AttrEntity;
 import com.wzy.quanyoumall.product.entity.AttrGroupEntity;
 import com.wzy.quanyoumall.product.service.AttrGroupService;
 import com.wzy.quanyoumall.product.service.CategoryService;
+import com.wzy.quanyoumall.product.vo.AttrGroupVo;
+import com.wzy.quanyoumall.product.vo.AttrVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,8 +53,10 @@ public class AttrGroupController {
         AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
         List<Long> catelogPath = categoryService.queryLevelCidsBycatelogId(attrGroup.getCatelogId());
         Collections.reverse(catelogPath);
-        attrGroup.setCatelogPath(catelogPath);
-        return R.ok().put("attrGroup", attrGroup);
+        AttrGroupVo agv = new AttrGroupVo();
+        BeanUtils.copyProperties(attrGroup ,agv);
+        agv.setCatelogPath(catelogPath);
+        return R.ok().put("attrGroup", agv);
     }
 
     /**

@@ -3,7 +3,7 @@
 
 <mapper namespace="com.wzy.quanyoumall.product.mapper.AttrMapper">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.wzy.quanyoumall.product.entity.AttrEntity" id="attrMap">
         <result property="attrId" column="attr_id"/>
         <result property="attrName" column="attr_name"/>
@@ -15,6 +15,34 @@
         <result property="catelogId" column="catelog_id"/>
         <result property="showDesc" column="show_desc"/>
     </resultMap>
+    <select id="queryPage" resultType="com.wzy.quanyoumall.product.vo.AttrVo">
+        SELECT pa.attr_id,
+        attr_name,
+        search_type,
+        pa.icon,
+        value_select,
+        attr_type,
+        enable,
+        pa.catelog_id,
+        show_desc,
+        pc.name as catelogName,
+        pag.attr_group_name as groupName
+        FROM pms_attr pa
+        left join pms_category pc on pa.catelog_id = pc.cat_id
+        left join pms_attr_attrgroup_relation paar on pa.attr_id = paar.attr_id
+        left join pms_attr_group pag on paar.attr_group_id = pag.attr_group_id
+        <where>
+            <if test="attrEntity.attrName != null and attrEntity.attrName != ''">
+                pa.attr_name = #{attrEntity.attrName}
+            </if>
+            <if test="attrEntity.catelogId != null and attrEntity.catelogId != ''">
+                pa.catelog_id = #{attrEntity.catelogId}
+            </if>
+            <if test="selectType != null">
+                pa.attr_type = #{selectType}
+            </if>
+        </where>
+    </select>
 
 
 </mapper>
