@@ -1,27 +1,21 @@
 package com.wzy.quanyoumall.coupon.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.wzy.quanyoumall.coupon.entity.HomeSubjectSpuEntity;
-import com.wzy.quanyoumall.coupon.service.HomeSubjectSpuService;
 import com.wzy.quanyoumall.common.utils.PageUtils;
 import com.wzy.quanyoumall.common.utils.R;
+import com.wzy.quanyoumall.coupon.entity.HomeSubjectSpuEntity;
+import com.wzy.quanyoumall.coupon.service.HomeSubjectSpuService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Map;
 
 
 /**
  * 专题商品
  *
  * @author wzy
- * @email 
+ * @email
  * @date 2025-01-05 21:34:21
  */
 @RestController
@@ -34,7 +28,7 @@ public class HomeSubjectSpuController {
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = homeSubjectSpuService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -45,8 +39,8 @@ public class HomeSubjectSpuController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
-		HomeSubjectSpuEntity homeSubjectSpu = homeSubjectSpuService.getById(id);
+    public R info(@PathVariable("id") Long id) {
+        HomeSubjectSpuEntity homeSubjectSpu = homeSubjectSpuService.getById(id);
 
         return R.ok().put("homeSubjectSpu", homeSubjectSpu);
     }
@@ -54,9 +48,9 @@ public class HomeSubjectSpuController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody HomeSubjectSpuEntity homeSubjectSpu){
-		homeSubjectSpuService.save(homeSubjectSpu);
+    @PostMapping("/save")
+    public R save(@RequestBody HomeSubjectSpuEntity homeSubjectSpu) {
+        homeSubjectSpuService.save(homeSubjectSpu);
 
         return R.ok();
     }
@@ -64,9 +58,9 @@ public class HomeSubjectSpuController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    public R update(@RequestBody HomeSubjectSpuEntity homeSubjectSpu){
-		homeSubjectSpuService.updateById(homeSubjectSpu);
+    @PutMapping("/update")
+    public R update(@RequestBody HomeSubjectSpuEntity homeSubjectSpu) {
+        homeSubjectSpuService.updateById(homeSubjectSpu);
 
         return R.ok();
     }
@@ -74,9 +68,9 @@ public class HomeSubjectSpuController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
-		homeSubjectSpuService.removeByIds(Arrays.asList(ids));
+    @DeleteMapping("/delete")
+    public R delete(@RequestBody Long[] ids) {
+        homeSubjectSpuService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

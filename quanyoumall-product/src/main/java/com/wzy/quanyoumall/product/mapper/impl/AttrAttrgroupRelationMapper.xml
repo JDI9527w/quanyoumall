@@ -3,7 +3,7 @@
 
 <mapper namespace="com.wzy.quanyoumall.product.mapper.AttrAttrgroupRelationMapper">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.wzy.quanyoumall.product.entity.AttrAttrgroupRelationEntity" id="attrAttrgroupRelationMap">
         <result property="id" column="id"/>
         <result property="attrId" column="attr_id"/>
@@ -12,9 +12,16 @@
     </resultMap>
     <delete id="deleteByAttrIds">
         delete from pms_attr_attrgroup_relation where attr_id in
-            <foreach collection="attrIds" separator="," item="attrId" open="(" close=")" index="index">
-                #{attrId}
-            </foreach>
+        <foreach collection="attrIds" separator="," item="attrId" open="(" close=")" index="index">
+            #{attrId}
+        </foreach>
+    </delete>
+    <delete id="deleteByAttrIdAndGroupId">
+        delete from pms_attr_attrgroup_relation
+        where
+        <foreach collection="relationEntities" item="re" separator=" or ">
+            (attr_id = #{re.attrId} and attr_group_id= #{re.attrGroupId})
+        </foreach>
     </delete>
 
 

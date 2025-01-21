@@ -18,4 +18,6 @@ import java.util.List;
 public interface AttrAttrgroupRelationMapper extends BaseMapper<AttrAttrgroupRelationEntity> {
 
     void deleteByAttrIds(@Param("attrIds") List<Long> attrIds);
+
+    void deleteByAttrIdAndGroupId(@Param("relationEntities") List<AttrAttrgroupRelationEntity> relationEntities);
 }

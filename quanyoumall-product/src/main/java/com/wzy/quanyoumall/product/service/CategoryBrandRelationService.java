@@ -6,6 +6,8 @@ import com.wzy.quanyoumall.product.entity.BrandEntity;
 import com.wzy.quanyoumall.product.entity.CategoryBrandRelationEntity;
 import com.wzy.quanyoumall.product.entity.CategoryEntity;
 
+import java.util.List;
+
 /**
  * 品牌分类关联
  *
@@ -30,5 +32,12 @@ public interface CategoryBrandRelationService extends IService<CategoryBrandRela
      * @param category
      */
     void updateCateNameByCateId(CategoryEntity category);
+
+    /**
+     * 通过分类id查询与之关联的品牌信息.
+     * @param catId
+     * @return
+     */
+    List<CategoryBrandRelationEntity> getBrandsListByCatId(Long catId);
 }
 

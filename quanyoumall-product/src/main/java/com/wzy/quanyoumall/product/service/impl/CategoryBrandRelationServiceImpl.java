@@ -13,6 +13,8 @@ import com.wzy.quanyoumall.product.mapper.CategoryBrandRelationMapper;
 import com.wzy.quanyoumall.product.service.CategoryBrandRelationService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandRelationMapper, CategoryBrandRelationEntity> implements CategoryBrandRelationService {
@@ -29,6 +31,14 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
         CategoryBrandRelationEntity cbre = new CategoryBrandRelationEntity();
         cbre.setCatelogName(category.getName());
         baseMapper.update(cbre,new UpdateWrapper<CategoryBrandRelationEntity>().eq("catelog_id", category.getCatId()));
+    }
+
+    @Override
+    public List<CategoryBrandRelationEntity> getBrandsListByCatId(Long catId) {
+        QueryWrapper<CategoryBrandRelationEntity> qw = new QueryWrapper<>();
+        qw.select("id","brand_id","brand_name");
+        qw.eq("catelog_id",catId);
+        return baseMapper.selectList(qw);
     }
 
     @Override

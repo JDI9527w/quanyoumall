@@ -1,27 +1,21 @@
 package com.wzy.quanyoumall.coupon.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.wzy.quanyoumall.coupon.entity.MemberPriceEntity;
-import com.wzy.quanyoumall.coupon.service.MemberPriceService;
 import com.wzy.quanyoumall.common.utils.PageUtils;
 import com.wzy.quanyoumall.common.utils.R;
+import com.wzy.quanyoumall.coupon.entity.MemberPriceEntity;
+import com.wzy.quanyoumall.coupon.service.MemberPriceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Map;
 
 
 /**
  * 商品会员价格
  *
  * @author wzy
- * @email 
+ * @email
  * @date 2025-01-05 21:34:21
  */
 @RestController
@@ -34,7 +28,7 @@ public class MemberPriceController {
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = memberPriceService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -45,8 +39,8 @@ public class MemberPriceController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
-		MemberPriceEntity memberPrice = memberPriceService.getById(id);
+    public R info(@PathVariable("id") Long id) {
+        MemberPriceEntity memberPrice = memberPriceService.getById(id);
 
         return R.ok().put("memberPrice", memberPrice);
     }
@@ -54,9 +48,9 @@ public class MemberPriceController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody MemberPriceEntity memberPrice){
-		memberPriceService.save(memberPrice);
+    @PostMapping("/save")
+    public R save(@RequestBody MemberPriceEntity memberPrice) {
+        memberPriceService.save(memberPrice);
 
         return R.ok();
     }
@@ -64,9 +58,9 @@ public class MemberPriceController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    public R update(@RequestBody MemberPriceEntity memberPrice){
-		memberPriceService.updateById(memberPrice);
+    @PutMapping("/update")
+    public R update(@RequestBody MemberPriceEntity memberPrice) {
+        memberPriceService.updateById(memberPrice);
 
         return R.ok();
     }
@@ -74,9 +68,9 @@ public class MemberPriceController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
-		memberPriceService.removeByIds(Arrays.asList(ids));
+    @DeleteMapping("/delete")
+    public R delete(@RequestBody Long[] ids) {
+        memberPriceService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

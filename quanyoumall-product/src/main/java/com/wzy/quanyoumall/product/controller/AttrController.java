@@ -26,11 +26,12 @@ public class AttrController {
     private AttrService attrService;
 
     /**
-     *  列表查询
+     * 列表查询
+     *
      * @param attrEntity 查询参数封装对象
      * @param selectType 查询类型
-     * @param pageNum   页码
-     * @param pageSize  页大小
+     * @param pageNum    页码
+     * @param pageSize   页大小
      * @return
      */
     @GetMapping("/{selectType}/list")
@@ -40,12 +41,12 @@ public class AttrController {
                   @RequestParam Integer pageSize) {
         Page<AttrEntity> page = new Page<>(pageNum, pageSize);
         Integer selectAttrType = null;
-        if (selectType.equals("base")){
+        if (selectType.equals("base")) {
             selectAttrType = ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode();
         } else if (selectType.equals("sale")) {
             selectAttrType = ProductConstant.AttrEnum.ATTR_TYPE_SALE.getCode();
         }
-        Page<AttrVo> result = attrService.queryPage(page, attrEntity,selectAttrType);
+        Page<AttrVo> result = attrService.queryPage(page, attrEntity, selectAttrType);
         return R.ok().put("data", result);
     }
 
@@ -86,4 +87,9 @@ public class AttrController {
         return R.ok();
     }
 
+    @GetMapping("/sale/list/{catelogId}")
+    public R getSaleListByCatelogId(@PathVariable("catelogId") Long catelogId) {
+        List<AttrEntity> saleAttrList = attrService.getSaleListByCatelogId(catelogId);
+        return R.ok().put("data", saleAttrList);
+    }
 }

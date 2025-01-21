@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -55,7 +56,7 @@ public class CategoryBrandRelationController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody CategoryBrandRelationEntity categoryBrandRelation) {
         String cateName = categoryService.getById(categoryBrandRelation.getCatelogId()).getName();
         String brandName = brandService.getById(categoryBrandRelation.getBrandId()).getName();
@@ -68,7 +69,7 @@ public class CategoryBrandRelationController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PutMapping("/update")
     public R update(@RequestBody CategoryBrandRelationEntity categoryBrandRelation) {
         categoryBrandRelationService.updateById(categoryBrandRelation);
 
@@ -78,11 +79,17 @@ public class CategoryBrandRelationController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @DeleteMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
         categoryBrandRelationService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }
 
+    @GetMapping("/brands/list")
+    public R getBrandsListByCatId(Long catId) {
+        List<CategoryBrandRelationEntity> brandList = categoryBrandRelationService.getBrandsListByCatId(catId);
+
+        return R.ok().put("data", brandList);
+    }
 }

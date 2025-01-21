@@ -4,11 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.wzy.quanyoumall.coupon.entity.CouponHistoryEntity;
 import com.wzy.quanyoumall.coupon.service.CouponHistoryService;
@@ -54,7 +50,7 @@ public class CouponHistoryController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody CouponHistoryEntity couponHistory){
 		couponHistoryService.save(couponHistory);
 
@@ -64,7 +60,7 @@ public class CouponHistoryController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PutMapping("/update")
     public R update(@RequestBody CouponHistoryEntity couponHistory){
 		couponHistoryService.updateById(couponHistory);
 
@@ -74,7 +70,7 @@ public class CouponHistoryController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @DeleteMapping("/delete")
     public R delete(@RequestBody Long[] ids){
 		couponHistoryService.removeByIds(Arrays.asList(ids));
 

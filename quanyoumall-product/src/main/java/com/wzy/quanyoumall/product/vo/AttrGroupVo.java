@@ -1,5 +1,6 @@
 package com.wzy.quanyoumall.product.vo;
 
+import com.wzy.quanyoumall.product.entity.AttrEntity;
 import lombok.Data;
 
 import java.util.List;
@@ -34,4 +35,8 @@ public class AttrGroupVo {
      * 分类树路径
      */
     private List<Long> catelogPath;
+    /**
+     * 组内属性
+     */
+    private List<AttrEntity> attrList;
 }

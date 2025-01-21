@@ -3,7 +3,7 @@
 
 <mapper namespace="com.wzy.quanyoumall.product.mapper.AttrGroupMapper">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.wzy.quanyoumall.product.entity.AttrGroupEntity" id="attrGroupMap">
         <result property="attrGroupId" column="attr_group_id"/>
         <result property="attrGroupName" column="attr_group_name"/>
@@ -12,6 +12,25 @@
         <result property="icon" column="icon"/>
         <result property="catelogId" column="catelog_id"/>
     </resultMap>
+    <select id="getRelationByAttrGroupId" resultType="com.wzy.quanyoumall.product.entity.AttrEntity">
+        select pa.*
+        from pms_attr_attrgroup_relation paar
+                 left join pms_attr pa on paar.attr_id = pa.attr_id
+        where paar.attr_group_id = #{attrGroupId}
+    </select>
+    <select id="selectAllNoAttrByGroupId" resultType="com.wzy.quanyoumall.product.entity.AttrEntity">
+        SELECT pa.*
+        FROM pms_attr pa
+          LEFT JOIN pms_attr_group pag ON pa.catelog_id = pag.catelog_id
+        WHERE pag.attr_group_id = #{attrGroupId}
+          and pa.attr_type = #{attrType}
+          <if test="paramName != null and paramName != ''">
+              and pa.attr_name = #{paramName}
+          </if>
+          AND pa.attr_id NOT IN (
+            SELECT paar.attr_id
+            FROM pms_attr_attrgroup_relation paar)
+    </select>
 
 
 </mapper>
