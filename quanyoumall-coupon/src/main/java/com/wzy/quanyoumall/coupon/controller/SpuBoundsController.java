@@ -1,9 +1,11 @@
 package com.wzy.quanyoumall.coupon.controller;
 
+import com.wzy.quanyoumall.common.to.SpuBoundsTo;
 import com.wzy.quanyoumall.common.utils.PageUtils;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.coupon.entity.SpuBoundsEntity;
 import com.wzy.quanyoumall.coupon.service.SpuBoundsService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,5 +76,4 @@ public class SpuBoundsController {
 
         return R.ok();
     }
-
 }

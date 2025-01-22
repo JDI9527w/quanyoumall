@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.wzy.quanyoumall.common.utils.PageUtils;
 import com.wzy.quanyoumall.product.entity.SpuImagesEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface SpuImagesService extends IService<SpuImagesEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveImgBatch(Long id, List<String> images);
 }
 

@@ -16,5 +16,5 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface AttrMapper extends BaseMapper<AttrEntity> {
-    Page<AttrVo> queryPage(@Param("page") Page<AttrEntity> page, @Param("attrEntity") AttrEntity attrEntity,@Param("selectType") Integer selectType);
+    Page<AttrVo> queryPage(@Param("page") Page<AttrEntity> page, @Param("attrEntity") AttrEntity attrEntity, @Param("selectType") Integer selectType);
 }
