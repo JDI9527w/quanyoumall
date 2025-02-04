@@ -1,12 +1,10 @@
 package com.wzy.quanyoumall.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wzy.quanyoumall.common.to.SkuReductionTo;
 import com.wzy.quanyoumall.common.to.SpuBoundsTo;
-import com.wzy.quanyoumall.common.utils.PageUtils;
-import com.wzy.quanyoumall.common.utils.Query;
 import com.wzy.quanyoumall.product.entity.*;
 import com.wzy.quanyoumall.product.feign.CouponFeignService;
 import com.wzy.quanyoumall.product.mapper.SpuInfoMapper;
@@ -14,6 +12,7 @@ import com.wzy.quanyoumall.product.service.*;
 import com.wzy.quanyoumall.product.vo.Bounds;
 import com.wzy.quanyoumall.product.vo.Images;
 import com.wzy.quanyoumall.product.vo.SpuSaveVo;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -113,13 +111,26 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
     }
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<SpuInfoEntity> page = this.page(
-                new Query<SpuInfoEntity>().getPage(params),
-                new QueryWrapper<SpuInfoEntity>()
-        );
-
-        return new PageUtils(page);
+    public Page<SpuInfoEntity> queryPage(SpuInfoEntity spuInfoEntity, Page<SpuInfoEntity> page) {
+        QueryWrapper<SpuInfoEntity> queryWrapper = new QueryWrapper<>();
+        if (ObjectUtils.isNotEmpty(spuInfoEntity)) {
+            if (spuInfoEntity.getBrandId() != null) {
+                queryWrapper.eq("brand_id", spuInfoEntity.getBrandId());
+            }
+            if (spuInfoEntity.getCatalogId() != null && spuInfoEntity.getCatalogId() != 0L) {
+                queryWrapper.eq("catalog_id", spuInfoEntity.getCatalogId());
+            }
+            if (spuInfoEntity.getPublishStatus() != null) {
+                queryWrapper.eq("publish_status", spuInfoEntity.getPublishStatus());
+            }
+            if (spuInfoEntity.getSpuDescription() != null && StringUtils.isNotBlank(spuInfoEntity.getSpuDescription())) {
+                queryWrapper.and((qw) -> {
+                    qw.like("spu_name", spuInfoEntity.getSpuDescription())
+                            .or()
+                            .like("spu_description", spuInfoEntity.getSpuDescription());
+                });
+            }
+        }
+        return baseMapper.selectPage(page, queryWrapper);
     }
-
 }

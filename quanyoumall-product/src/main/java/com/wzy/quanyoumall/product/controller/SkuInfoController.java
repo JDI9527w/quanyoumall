@@ -1,14 +1,14 @@
 package com.wzy.quanyoumall.product.controller;
 
-import com.wzy.quanyoumall.common.utils.PageUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.product.entity.SkuInfoEntity;
 import com.wzy.quanyoumall.product.service.SkuInfoService;
+import com.wzy.quanyoumall.product.vo.SkuCheckVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Map;
 
 
 /**
@@ -27,11 +27,13 @@ public class SkuInfoController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = skuInfoService.queryPage(params);
-
-        return R.ok().put("page", page);
+    @GetMapping("/list")
+    public R queryPageList(SkuCheckVo skuCheckVo,
+                           @RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize) {
+        Page<SkuInfoEntity> page = new Page<>(pageNum, pageSize);
+        Page<SkuInfoEntity> result = skuInfoService.queryPage(skuCheckVo, page);
+        return R.ok().put("data", result);
     }
 
 

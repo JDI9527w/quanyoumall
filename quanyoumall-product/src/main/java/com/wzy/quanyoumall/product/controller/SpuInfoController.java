@@ -1,6 +1,6 @@
 package com.wzy.quanyoumall.product.controller;
 
-import com.wzy.quanyoumall.common.utils.PageUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.product.entity.SpuInfoEntity;
 import com.wzy.quanyoumall.product.service.SpuInfoService;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Map;
 
 
 /**
@@ -28,11 +27,13 @@ public class SpuInfoController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = spuInfoService.queryPage(params);
-
-        return R.ok().put("page", page);
+    @GetMapping("/list")
+    public R queryPageList(SpuInfoEntity spuInfoEntity,
+                           @RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize) {
+        Page<SpuInfoEntity> page = new Page<>(pageNum, pageSize);
+        Page<SpuInfoEntity> spuInfoEntityPage = spuInfoService.queryPage(spuInfoEntity, page);
+        return R.ok().put("data", spuInfoEntityPage);
     }
 
 
