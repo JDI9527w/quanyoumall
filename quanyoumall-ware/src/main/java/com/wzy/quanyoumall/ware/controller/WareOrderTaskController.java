@@ -1,6 +1,6 @@
 package com.wzy.quanyoumall.ware.controller;
 
-import com.wzy.quanyoumall.common.utils.PageUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.ware.entity.WareOrderTaskEntity;
 import com.wzy.quanyoumall.ware.service.WareOrderTaskService;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Map;
 
 
 /**
@@ -28,10 +27,12 @@ public class WareOrderTaskController {
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = wareOrderTaskService.queryPage(params);
-
-        return R.ok().put("page", page);
+    public R queryPageList(WareOrderTaskEntity wareOrderTaskEntity,
+                           @RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize) {
+        Page<WareOrderTaskEntity> page = new Page<>(pageNum, pageSize);
+        Page<WareOrderTaskEntity> result = wareOrderTaskService.queryPage(wareOrderTaskEntity, page);
+        return R.ok().put("data", result);
     }
 
 

@@ -1,6 +1,6 @@
 package com.wzy.quanyoumall.ware.controller;
 
-import com.wzy.quanyoumall.common.utils.PageUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.ware.entity.PurchaseEntity;
 import com.wzy.quanyoumall.ware.service.PurchaseService;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.List;
 
 
 /**
@@ -28,12 +28,30 @@ public class PurchaseController {
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = purchaseService.queryPage(params);
-
-        return R.ok().put("page", page);
+    public R queryPageList(PurchaseEntity purchaseEntity,
+                           @RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize) {
+        Page<PurchaseEntity> page = new Page<>(pageNum, pageSize);
+        Page<PurchaseEntity> result = purchaseService.queryPage(purchaseEntity, page);
+        return R.ok().put("data", result);
     }
 
+    /**
+     * 根据条件查询采购单
+     *
+     * @return
+     */
+    @GetMapping("/unreceive/list")
+    public R queryListByCondition(@RequestParam String checkStatus) {
+        List<PurchaseEntity> purchaseEntities = purchaseService.queryListByCondition(checkStatus);
+        return R.ok().put("data", purchaseEntities);
+    }
+
+    @PostMapping("/merge")
+    public R mergePurchaseDetail(@RequestBody List<Long> purchaseDetailIdList, @RequestParam(required = false) Long purchaseId) {
+        purchaseService.contactPurchaseDetail(purchaseDetailIdList, purchaseId);
+        return R.ok();
+    }
 
     /**
      * 信息

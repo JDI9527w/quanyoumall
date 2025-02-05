@@ -1,6 +1,6 @@
 package com.wzy.quanyoumall.ware.controller;
 
-import com.wzy.quanyoumall.common.utils.PageUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.ware.entity.WareInfoEntity;
 import com.wzy.quanyoumall.ware.service.WareInfoService;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Map;
 
 
 /**
@@ -27,11 +26,14 @@ public class WareInfoController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = wareInfoService.queryPage(params);
+    @GetMapping("/list")
+    public R queryPageList(WareInfoEntity wareInfoEntity,
+                           @RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize) {
+        Page<WareInfoEntity> page = new Page<>(pageNum, pageSize);
+        Page<WareInfoEntity> result = wareInfoService.queryPage(wareInfoEntity, page);
 
-        return R.ok().put("page", page);
+        return R.ok().put("data", result);
     }
 
 

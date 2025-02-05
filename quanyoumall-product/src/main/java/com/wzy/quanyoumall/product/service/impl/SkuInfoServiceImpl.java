@@ -33,7 +33,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfoEntity
             if (skuCheckVo.getMaxPrice() != null && skuCheckVo.getMaxPrice().compareTo(new BigDecimal(0L)) > 0) {
                 qw.le("price", skuCheckVo.getMaxPrice());
             }
-            if (skuCheckVo.getKey() != null && StringUtils.isNotBlank(skuCheckVo.getKey())) {
+            if (StringUtils.isNotBlank(skuCheckVo.getKey())) {
                 qw.and(q -> {
                     q.like("sku_name", skuCheckVo.getKey()).or();
                     q.like("sku_desc", skuCheckVo.getKey()).or();

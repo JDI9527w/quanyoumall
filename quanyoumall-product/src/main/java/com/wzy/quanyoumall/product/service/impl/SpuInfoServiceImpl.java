@@ -123,7 +123,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
             if (spuInfoEntity.getPublishStatus() != null) {
                 queryWrapper.eq("publish_status", spuInfoEntity.getPublishStatus());
             }
-            if (spuInfoEntity.getSpuDescription() != null && StringUtils.isNotBlank(spuInfoEntity.getSpuDescription())) {
+            if (StringUtils.isNotBlank(spuInfoEntity.getSpuDescription())) {
                 queryWrapper.and((qw) -> {
                     qw.like("spu_name", spuInfoEntity.getSpuDescription())
                             .or()
