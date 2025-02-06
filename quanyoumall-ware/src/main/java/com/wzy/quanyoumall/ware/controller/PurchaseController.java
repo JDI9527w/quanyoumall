@@ -48,7 +48,6 @@ public class PurchaseController {
         return R.ok().put("data", purchaseEntities);
     }
 
-    //TODO:待测试.
     @PostMapping("/merge")
     public R mergePurchaseDetail(@RequestBody PurchaseMergeDTO purchaseMergeDTO) {
         purchaseService.contactPurchaseDetail(purchaseMergeDTO.getPurchaseDetailIdList(), purchaseMergeDTO.getPurchaseId());
