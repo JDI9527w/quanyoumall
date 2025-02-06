@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 商品评价
@@ -54,7 +54,7 @@ public class SpuCommentEntity implements Serializable {
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 显示状态[0-不显示，1-显示]
      */

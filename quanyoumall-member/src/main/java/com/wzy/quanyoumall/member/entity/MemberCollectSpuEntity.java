@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 会员收藏的商品
@@ -46,6 +46,6 @@ public class MemberCollectSpuEntity implements Serializable {
      * create_time
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

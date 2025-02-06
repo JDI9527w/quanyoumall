@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 成长值变化历史记录
@@ -34,7 +34,7 @@ public class GrowthChangeHistoryEntity implements Serializable {
      * create_time
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 改变的值（正负计数）
      */

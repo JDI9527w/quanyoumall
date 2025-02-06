@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 会员
@@ -61,7 +61,7 @@ public class MemberEntity implements Serializable {
     /**
      * 生日
      */
-    private Date birth;
+    private LocalDateTime birth;
     /**
      * 所在城市
      */
@@ -94,6 +94,6 @@ public class MemberEntity implements Serializable {
      * 注册时间
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

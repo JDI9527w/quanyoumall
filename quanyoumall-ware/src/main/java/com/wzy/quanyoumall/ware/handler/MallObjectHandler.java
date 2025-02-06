@@ -1,4 +1,4 @@
-package com.wzy.quanyoumall.common.handler;
+package com.wzy.quanyoumall.ware.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;

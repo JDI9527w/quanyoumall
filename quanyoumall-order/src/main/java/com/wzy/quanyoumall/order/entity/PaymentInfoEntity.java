@@ -8,7 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 支付信息表
@@ -55,11 +55,11 @@ public class PaymentInfoEntity implements Serializable {
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 确认时间
      */
-    private Date confirmTime;
+    private LocalDateTime confirmTime;
     /**
      * 回调内容
      */
@@ -67,6 +67,6 @@ public class PaymentInfoEntity implements Serializable {
     /**
      * 回调时间
      */
-    private Date callbackTime;
+    private LocalDateTime callbackTime;
 
 }

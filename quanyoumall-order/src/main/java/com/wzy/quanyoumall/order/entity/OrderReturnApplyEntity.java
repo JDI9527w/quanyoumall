@@ -8,7 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 订单退货申请
@@ -43,7 +43,7 @@ public class OrderReturnApplyEntity implements Serializable {
      * 申请时间
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 会员用户名
      */
@@ -67,7 +67,7 @@ public class OrderReturnApplyEntity implements Serializable {
     /**
      * 处理时间
      */
-    private Date handleTime;
+    private LocalDateTime handleTime;
     /**
      * 商品图片
      */
@@ -123,7 +123,7 @@ public class OrderReturnApplyEntity implements Serializable {
     /**
      * 收货时间
      */
-    private Date receiveTime;
+    private LocalDateTime receiveTime;
     /**
      * 收货备注
      */

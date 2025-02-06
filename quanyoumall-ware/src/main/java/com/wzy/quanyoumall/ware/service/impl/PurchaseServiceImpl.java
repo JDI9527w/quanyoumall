@@ -77,9 +77,9 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, PurchaseEnt
         purchaseDetailService.updateBatchById(detailEntityList);
         // 计算总金额
         BigDecimal sumPrice = detailEntityList.stream()
-                .map(detailEntity -> detailEntity.getSkuPrice().multiply(new BigDecimal(detailEntity.getSkuNum())))
+                .map(PurchaseDetailEntity::getSkuPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        purchaseEntity.setAmount(purchaseEntity.getAmount().add(sumPrice));
+        purchaseEntity.setAmount(purchaseEntity.getAmount() != null ? purchaseEntity.getAmount().add(sumPrice) : sumPrice);
         purchaseEntity.setWareId(detailEntityList.get(0).getWareId());
         // 更新采购单.
         baseMapper.updateById(purchaseEntity);

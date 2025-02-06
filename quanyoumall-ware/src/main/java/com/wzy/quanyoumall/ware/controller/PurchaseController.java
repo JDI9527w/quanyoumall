@@ -2,6 +2,7 @@ package com.wzy.quanyoumall.ware.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.utils.R;
+import com.wzy.quanyoumall.ware.Dto.PurchaseMergeDTO;
 import com.wzy.quanyoumall.ware.entity.PurchaseEntity;
 import com.wzy.quanyoumall.ware.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +48,10 @@ public class PurchaseController {
         return R.ok().put("data", purchaseEntities);
     }
 
+    //TODO:待测试.
     @PostMapping("/merge")
-    public R mergePurchaseDetail(@RequestBody List<Long> purchaseDetailIdList, @RequestParam(required = false) Long purchaseId) {
-        purchaseService.contactPurchaseDetail(purchaseDetailIdList, purchaseId);
+    public R mergePurchaseDetail(@RequestBody PurchaseMergeDTO purchaseMergeDTO) {
+        purchaseService.contactPurchaseDetail(purchaseMergeDTO.getPurchaseDetailIdList(), purchaseMergeDTO.getPurchaseId());
         return R.ok();
     }
 
@@ -76,7 +78,7 @@ public class PurchaseController {
     /**
      * 修改
      */
-    @PutMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody PurchaseEntity purchase) {
         purchaseService.updateById(purchase);
 

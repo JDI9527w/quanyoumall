@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 秒杀活动
@@ -33,11 +33,11 @@ public class SeckillPromotionEntity implements Serializable {
     /**
      * 开始日期
      */
-    private Date startTime;
+    private LocalDateTime startTime;
     /**
      * 结束日期
      */
-    private Date endTime;
+    private LocalDateTime endTime;
     /**
      * 上下线状态
      */
@@ -46,7 +46,7 @@ public class SeckillPromotionEntity implements Serializable {
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 创建人
      */

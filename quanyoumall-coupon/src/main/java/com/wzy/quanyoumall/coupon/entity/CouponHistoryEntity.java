@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 优惠券领取历史记录
@@ -46,7 +46,7 @@ public class CouponHistoryEntity implements Serializable {
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 使用状态[0->未使用；1->已使用；2->已过期]
      */
@@ -54,7 +54,7 @@ public class CouponHistoryEntity implements Serializable {
     /**
      * 使用时间
      */
-    private Date useTime;
+    private LocalDateTime useTime;
     /**
      * 订单id
      */
