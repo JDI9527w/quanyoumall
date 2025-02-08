@@ -9,6 +9,8 @@ import com.wzy.quanyoumall.ware.service.PurchaseDetailService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class PurchaseDetailServiceImpl extends ServiceImpl<PurchaseDetailMapper, PurchaseDetailEntity> implements PurchaseDetailService {
@@ -31,5 +33,21 @@ public class PurchaseDetailServiceImpl extends ServiceImpl<PurchaseDetailMapper,
             }
         }
         return baseMapper.selectPage(page, queryWrapper);
+    }
+
+    @Override
+    public void changeStatusByPurchaseIds(List<Long> realPurchaseIds, Integer statusCode) {
+        realPurchaseIds.forEach(purId -> {
+            List<PurchaseDetailEntity> purchaseDetailEntities = this.listByPurchaseId(purId);
+            purchaseDetailEntities.forEach(item -> {
+                item.setStatus(statusCode);
+            });
+            this.updateBatchById(purchaseDetailEntities);
+        });
+    }
+
+    @Override
+    public List<PurchaseDetailEntity> listByPurchaseId(Long purId) {
+        return baseMapper.selectList(new QueryWrapper<PurchaseDetailEntity>().eq("purchase_id", purId));
     }
 }

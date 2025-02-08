@@ -2,6 +2,7 @@ package com.wzy.quanyoumall.ware.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.utils.R;
+import com.wzy.quanyoumall.ware.Dto.PurchaseFinshDTO;
 import com.wzy.quanyoumall.ware.Dto.PurchaseMergeDTO;
 import com.wzy.quanyoumall.ware.entity.PurchaseEntity;
 import com.wzy.quanyoumall.ware.service.PurchaseService;
@@ -48,9 +49,32 @@ public class PurchaseController {
         return R.ok().put("data", purchaseEntities);
     }
 
+    /**
+     * 合并采购需求到采购单.
+     *
+     * @param purchaseMergeDTO
+     * @return
+     */
     @PostMapping("/merge")
     public R mergePurchaseDetail(@RequestBody PurchaseMergeDTO purchaseMergeDTO) {
-        purchaseService.contactPurchaseDetail(purchaseMergeDTO.getPurchaseDetailIdList(), purchaseMergeDTO.getPurchaseId());
+        return purchaseService.contactPurchaseDetail(purchaseMergeDTO.getPurchaseDetailIdList(), purchaseMergeDTO.getPurchaseId());
+    }
+
+    @PutMapping("/done")
+    public R finshPurchase(@RequestBody PurchaseFinshDTO purchaseFinshDTO) {
+        purchaseService.finshPurchase(purchaseFinshDTO);
+        return R.ok();
+    }
+
+    /**
+     * 领取采购单.
+     *
+     * @param purchaseIds 采购单ids
+     * @return
+     */
+    @PostMapping("/receive")
+    public R receivePurchaseByPurchaseIds(@RequestBody List<Long> purchaseIds) {
+        purchaseService.receivePurchaseByPurchaseIds(purchaseIds);
         return R.ok();
     }
 
