@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.constant.ProductConstant;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.product.entity.AttrEntity;
+import com.wzy.quanyoumall.product.entity.ProductAttrValueEntity;
 import com.wzy.quanyoumall.product.service.AttrService;
+import com.wzy.quanyoumall.product.service.ProductAttrValueService;
 import com.wzy.quanyoumall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,8 @@ import java.util.List;
 public class AttrController {
     @Autowired
     private AttrService attrService;
+    @Autowired
+    private ProductAttrValueService productAttrValueService;
 
     /**
      * 列表查询
@@ -91,5 +95,17 @@ public class AttrController {
     public R getSaleListByCatelogId(@PathVariable("catelogId") Long catelogId) {
         List<AttrEntity> saleAttrList = attrService.getSaleListByCatelogId(catelogId);
         return R.ok().put("data", saleAttrList);
+    }
+
+    @GetMapping("/base/listforspu/{spuId}")
+    public R getAttrListBySpuId(@PathVariable("spuId") Long spuId) {
+        List<ProductAttrValueEntity> paveList = productAttrValueService.getAttrListBySpuId(spuId);
+        return R.ok().put("data", paveList);
+    }
+
+    @PutMapping("/update/{spuId}")
+    public R updateAttrValBySpuId(@PathVariable("spuId") Long spuId, @RequestBody List<ProductAttrValueEntity> paveList) {
+        productAttrValueService.updateSpuAttr(spuId, paveList);
+        return R.ok();
     }
 }
