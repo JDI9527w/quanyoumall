@@ -13,6 +13,14 @@
         <result property="attrSort" column="attr_sort"/>
         <result property="quickShow" column="quick_show"/>
     </resultMap>
+    <select id="listGetNeedSearchAttrBySpuId"
+            resultType="com.wzy.quanyoumall.product.entity.ProductAttrValueEntity">
+        select ppav.*
+        from pms_product_attr_value ppav
+        left join pms_attr pa on ppav.attr_id = pa.attr_id
+        where pa.search_type = 1
+            and ppav.spu_id = #{spuId}
+    </select>
 
 
 </mapper>

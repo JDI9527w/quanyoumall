@@ -51,7 +51,7 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueMap
     @Override
     @Transactional
     public void updateSpuAttr(Long spuId, List<ProductAttrValueEntity> paveList) {
-        baseMapper.delete(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id",spuId));
+        baseMapper.delete(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId));
         paveList.forEach(item -> {
             item.setSpuId(spuId);
         });
@@ -68,4 +68,8 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueMap
         return new PageUtils(page);
     }
 
+    @Override
+    public List<ProductAttrValueEntity> listGetNeedSearchAttrBySpuId(Long spuId) {
+        return baseMapper.listGetNeedSearchAttrBySpuId(spuId);
+    }
 }

@@ -2,8 +2,8 @@ package com.wzy.quanyoumall.ware.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.utils.R;
-import com.wzy.quanyoumall.ware.Dto.PurchaseFinshDTO;
-import com.wzy.quanyoumall.ware.Dto.PurchaseMergeDTO;
+import com.wzy.quanyoumall.ware.dto.PurchaseFinshDTO;
+import com.wzy.quanyoumall.ware.dto.PurchaseMergeDTO;
 import com.wzy.quanyoumall.ware.entity.PurchaseEntity;
 import com.wzy.quanyoumall.ware.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;

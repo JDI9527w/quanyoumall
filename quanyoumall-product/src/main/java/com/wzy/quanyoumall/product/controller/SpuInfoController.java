@@ -36,14 +36,12 @@ public class SpuInfoController {
         return R.ok().put("data", spuInfoEntityPage);
     }
 
-
     /**
      * 信息
      */
     @RequestMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
         SpuInfoEntity spuInfo = spuInfoService.getById(id);
-
         return R.ok().put("spuInfo", spuInfo);
     }
 
@@ -53,7 +51,6 @@ public class SpuInfoController {
     @PostMapping("/save")
     public R save(@RequestBody SpuSaveVo spuSaveVo) {
         spuInfoService.saveBySpuSaveVo(spuSaveVo);
-
         return R.ok();
     }
 
@@ -63,7 +60,6 @@ public class SpuInfoController {
     @PutMapping("/update")
     public R update(@RequestBody SpuInfoEntity spuInfo) {
         spuInfoService.updateById(spuInfo);
-
         return R.ok();
     }
 
@@ -73,8 +69,18 @@ public class SpuInfoController {
     @DeleteMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
         spuInfoService.removeByIds(Arrays.asList(ids));
-
         return R.ok();
     }
 
+    /**
+     * 商品上架
+     *
+     * @param spuId
+     * @return
+     */
+    @PostMapping("{spuId}/up")
+    public R upSpuById(@PathVariable("spuId") Long spuId) {
+        spuInfoService.upSpuById(spuId);
+        return R.ok();
+    }
 }

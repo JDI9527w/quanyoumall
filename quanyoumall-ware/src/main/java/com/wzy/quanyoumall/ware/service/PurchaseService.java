@@ -3,7 +3,7 @@ package com.wzy.quanyoumall.ware.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wzy.quanyoumall.common.utils.R;
-import com.wzy.quanyoumall.ware.Dto.PurchaseFinshDTO;
+import com.wzy.quanyoumall.ware.dto.PurchaseFinshDTO;
 import com.wzy.quanyoumall.ware.entity.PurchaseEntity;
 
 import java.util.List;

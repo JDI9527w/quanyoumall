@@ -1,4 +1,4 @@
-package com.wzy.quanyoumall.ware.Dto;
+package com.wzy.quanyoumall.ware.dto;
 
 import lombok.Data;
 

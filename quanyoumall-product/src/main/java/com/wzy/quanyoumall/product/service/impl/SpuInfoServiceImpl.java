@@ -4,14 +4,19 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wzy.quanyoumall.common.to.SkuReductionTo;
+import com.wzy.quanyoumall.common.to.SkuStockTO;
 import com.wzy.quanyoumall.common.to.SpuBoundsTo;
+import com.wzy.quanyoumall.common.utils.ObjectBeanUtils;
+import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.product.entity.*;
 import com.wzy.quanyoumall.product.feign.CouponFeignService;
+import com.wzy.quanyoumall.product.feign.WareFeignService;
 import com.wzy.quanyoumall.product.mapper.SpuInfoMapper;
 import com.wzy.quanyoumall.product.service.*;
 import com.wzy.quanyoumall.product.vo.Bounds;
 import com.wzy.quanyoumall.product.vo.Images;
 import com.wzy.quanyoumall.product.vo.SpuSaveVo;
+import com.wzy.quanyoumall.product.vo.es.SkuEsVo;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -21,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -41,6 +47,12 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
     private SkuSaleAttrValueService skuSaleAttrValueService;
     @Autowired
     private CouponFeignService couponFeignService;
+    @Autowired
+    private WareFeignService wareFeignService;
+    @Autowired
+    private BrandService brandService;
+    @Autowired
+    private CategoryService categoryService;
 
     @Transactional
     @Override
@@ -132,5 +144,38 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
             }
         }
         return baseMapper.selectPage(page, queryWrapper);
+    }
+
+
+    @Override
+    public void upSpuById(Long spuId) {
+        List<SkuInfoEntity> skuInfoEntities = skuInfoService.listSkuInfoBySpuId(spuId);
+        List<Long> skuIds = skuInfoEntities.stream().map(SkuInfoEntity::getSkuId).collect(Collectors.toList());
+        // 查询库存 TODO:远程调用可能异常,加入hystrix 返回false数据
+        R<List<SkuStockTO>> listResult = wareFeignService.infoBySkuId(skuIds);
+        Map<Long, Boolean> stockMap = listResult.getData().stream().collect(Collectors.toMap(SkuStockTO::getSkuId, SkuStockTO::getHasStock));
+        // 查询可供检索的属性
+        List<ProductAttrValueEntity> attrSpuList = productAttrValueService.listGetNeedSearchAttrBySpuId(spuId);
+        List<SkuEsVo.Attrs> attrsList = ObjectBeanUtils.cpProperties(attrSpuList, SkuEsVo.Attrs.class);
+        List<SkuEsVo> skuEsVoList = ObjectBeanUtils.cpProperties(skuInfoEntities, SkuEsVo.class);
+        // 获取分类对象
+        SpuInfoEntity spuInfoEntity = baseMapper.selectById(spuId);
+        CategoryEntity categoryEntity = categoryService.getById(spuInfoEntity.getCatalogId());
+        String categoryName = categoryEntity.getName();
+        // 获取品牌对象
+        BrandEntity brandEntity = brandService.getById(spuInfoEntity.getBrandId());
+        String brandName = brandEntity.getName();
+        String brandLogo = brandEntity.getLogo();
+        // 赋值
+        skuEsVoList.forEach(item -> {
+            Boolean hasStock = stockMap.get(item.getSkuId());
+            item.setHasStock(hasStock);
+            item.setHotScore(0L);
+            item.setBrandName(brandName);
+            item.setBrandImg(brandLogo);
+            item.setCatalogName(categoryName);
+            item.setAttrs(attrsList);
+        });
+
     }
 }

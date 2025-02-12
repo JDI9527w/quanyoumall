@@ -1,6 +1,7 @@
 package com.wzy.quanyoumall.ware.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wzy.quanyoumall.common.to.SkuStockTO;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.ware.entity.WareSkuEntity;
 import com.wzy.quanyoumall.ware.service.WareSkuService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -43,8 +45,18 @@ public class WareSkuController {
     @RequestMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
         WareSkuEntity wareSku = wareSkuService.getById(id);
-
         return R.ok().put("wareSku", wareSku);
+    }
+
+    /**
+     * 通过skuid查询库存信息
+     */
+    @PostMapping("/infoBySkuId")
+    public R<List<SkuStockTO>> infoBySkuId(@RequestBody List<Long> skuIds) {
+        List<SkuStockTO> hasStokeBySkuIds = wareSkuService.getHasStokeBySkuIds(skuIds);
+        R<List<SkuStockTO>> r = new R<>();
+        r.setData(hasStokeBySkuIds);
+        return r;
     }
 
     /**
@@ -53,7 +65,6 @@ public class WareSkuController {
     @PostMapping("/save")
     public R save(@RequestBody WareSkuEntity wareSku) {
         wareSkuService.save(wareSku);
-
         return R.ok();
     }
 
@@ -63,7 +74,6 @@ public class WareSkuController {
     @PutMapping("/update")
     public R update(@RequestBody WareSkuEntity wareSku) {
         wareSkuService.updateById(wareSku);
-
         return R.ok();
     }
 
@@ -73,7 +83,6 @@ public class WareSkuController {
     @DeleteMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
         wareSkuService.removeByIds(Arrays.asList(ids));
-
         return R.ok();
     }
 
