@@ -1,6 +1,5 @@
 package com.wzy.quanyoumall.product.feign;
 
-import com.wzy.quanyoumall.common.to.SkuStockTO;
 import com.wzy.quanyoumall.common.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +15,6 @@ public interface WareFeignService {
      * @param skuIds
      * @return
      */
-    @PostMapping("/infoBySkuId")
-    R<List<SkuStockTO>> infoBySkuId(@RequestBody List<Long> skuIds);
+    @PostMapping("ware/waresku/infoBySkuId")
+    R infoBySkuId(@RequestBody List<Long> skuIds);
 }

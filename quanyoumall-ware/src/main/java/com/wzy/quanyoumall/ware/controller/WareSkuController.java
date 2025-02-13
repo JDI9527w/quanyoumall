@@ -52,11 +52,9 @@ public class WareSkuController {
      * 通过skuid查询库存信息
      */
     @PostMapping("/infoBySkuId")
-    public R<List<SkuStockTO>> infoBySkuId(@RequestBody List<Long> skuIds) {
+    public R infoBySkuId(@RequestBody List<Long> skuIds) {
         List<SkuStockTO> hasStokeBySkuIds = wareSkuService.getHasStokeBySkuIds(skuIds);
-        R<List<SkuStockTO>> r = new R<>();
-        r.setData(hasStokeBySkuIds);
-        return r;
+        return R.ok().put("data", hasStokeBySkuIds);
     }
 
     /**

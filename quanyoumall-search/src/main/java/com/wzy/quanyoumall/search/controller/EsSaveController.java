@@ -1,9 +1,10 @@
 package com.wzy.quanyoumall.search.controller;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.core.IndexResponse;
+import com.wzy.quanyoumall.common.exception.bizCodeEnum;
 import com.wzy.quanyoumall.common.utils.R;
+import com.wzy.quanyoumall.search.service.ProductSaveService;
 import com.wzy.quanyoumall.search.vo.SkuEsVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,19 +14,26 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/es/save")
 public class EsSaveController {
 
     @Autowired
-    private ElasticsearchClient elasticsearchClient;
+    private ProductSaveService productSaveService;
 
     @PostMapping("/product")
-    public R productUp(@RequestBody List<SkuEsVo> skuEsVoList) throws IOException {
-        // TODO:保存是否正确,id?
-        IndexResponse productRes = elasticsearchClient.index(i -> i.index("product").document(skuEsVoList));
-        // 解析保存结果
-        return R.ok();
+    public R productUp(@RequestBody List<SkuEsVo> skuEsVoList) {
+        boolean flag;
+        try {
+            flag = productSaveService.productUp(skuEsVoList);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e.getStackTrace(), e.getClass());
+            return R.error(bizCodeEnum.PRODUCT_UP_EXCEPTION.getCode(), bizCodeEnum.PRODUCT_UP_EXCEPTION.getMsg());
+        }
+        if (flag) {
+            return R.ok();
+        }
+        return R.error(bizCodeEnum.PRODUCT_UP_EXCEPTION.getCode(), bizCodeEnum.PRODUCT_UP_EXCEPTION.getMsg());
     }
-
 }

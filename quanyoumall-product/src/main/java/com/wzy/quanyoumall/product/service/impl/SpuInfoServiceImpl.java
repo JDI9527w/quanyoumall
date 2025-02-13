@@ -3,6 +3,7 @@ package com.wzy.quanyoumall.product.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wzy.quanyoumall.common.constant.ProductConstant;
 import com.wzy.quanyoumall.common.to.SkuReductionTo;
 import com.wzy.quanyoumall.common.to.SkuStockTO;
 import com.wzy.quanyoumall.common.to.SpuBoundsTo;
@@ -10,6 +11,7 @@ import com.wzy.quanyoumall.common.utils.ObjectBeanUtils;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.product.entity.*;
 import com.wzy.quanyoumall.product.feign.CouponFeignService;
+import com.wzy.quanyoumall.product.feign.SearchFeignService;
 import com.wzy.quanyoumall.product.feign.WareFeignService;
 import com.wzy.quanyoumall.product.mapper.SpuInfoMapper;
 import com.wzy.quanyoumall.product.service.*;
@@ -24,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +56,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
     private BrandService brandService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private SearchFeignService searchFeignService;
 
     @Transactional
     @Override
@@ -152,12 +157,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
         List<SkuInfoEntity> skuInfoEntities = skuInfoService.listSkuInfoBySpuId(spuId);
         List<Long> skuIds = skuInfoEntities.stream().map(SkuInfoEntity::getSkuId).collect(Collectors.toList());
         // 查询库存 TODO:远程调用可能异常,加入hystrix 返回false数据
-        R<List<SkuStockTO>> listResult = wareFeignService.infoBySkuId(skuIds);
-        Map<Long, Boolean> stockMap = listResult.getData().stream().collect(Collectors.toMap(SkuStockTO::getSkuId, SkuStockTO::getHasStock));
+        Map<Long, Boolean> stockMap = checkSkuStock(skuIds);
         // 查询可供检索的属性
         List<ProductAttrValueEntity> attrSpuList = productAttrValueService.listGetNeedSearchAttrBySpuId(spuId);
         List<SkuEsVo.Attrs> attrsList = ObjectBeanUtils.cpProperties(attrSpuList, SkuEsVo.Attrs.class);
-        List<SkuEsVo> skuEsVoList = ObjectBeanUtils.cpProperties(skuInfoEntities, SkuEsVo.class);
         // 获取分类对象
         SpuInfoEntity spuInfoEntity = baseMapper.selectById(spuId);
         CategoryEntity categoryEntity = categoryService.getById(spuInfoEntity.getCatalogId());
@@ -167,15 +170,46 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
         String brandName = brandEntity.getName();
         String brandLogo = brandEntity.getLogo();
         // 赋值
+        List<SkuEsVo> skuEsVoList = ObjectBeanUtils.cpProperties(skuInfoEntities, SkuEsVo.class);
         skuEsVoList.forEach(item -> {
-            Boolean hasStock = stockMap.get(item.getSkuId());
-            item.setHasStock(hasStock);
+            Boolean hasStock = null;
+            if (stockMap != null) {
+                hasStock = stockMap.get(item.getSkuId());
+            }
+            item.setHasStock(hasStock != null ? hasStock : false);
             item.setHotScore(0L);
             item.setBrandName(brandName);
             item.setBrandImg(brandLogo);
             item.setCatalogName(categoryName);
             item.setAttrs(attrsList);
         });
+        // TODO:幂等性问题,后期可以加入消息队列,或者新建表,如果商品上架成功,将商品id插入表中,上架前,先查询表,没有再上.有就更新?
+        R productUpRes = searchFeignService.productUp(skuEsVoList);
+        if (productUpRes.getCode() == 0) {
+            spuInfoEntity.setPublishStatus(ProductConstant.StatusEnum.UP_STATE.getCode());
+            baseMapper.updateById(spuInfoEntity);
+        } else {
 
+        }
+    }
+
+    /**
+     * 查询库存
+     *
+     * @param skuIds
+     * @return
+     */
+    private Map<Long, Boolean> checkSkuStock(List<Long> skuIds) {
+        Map<Long, Boolean> stockMap = null;
+        try {
+            R resultMap = wareFeignService.infoBySkuId(skuIds);
+            List<SkuStockTO> skuStockTOS = ObjectBeanUtils.extractAndDeserializeListFromJson(resultMap, "data", SkuStockTO.class);
+            if (skuStockTOS != null) {
+                stockMap = skuStockTOS.stream().collect(Collectors.toMap(SkuStockTO::getSkuId, SkuStockTO::getHasStock));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stockMap;
     }
 }
