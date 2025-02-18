@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/quanyoumall-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-coupon/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-coupon/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-member/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-member/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-order/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-order/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-product/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-product/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-search/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-search/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-third-party/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-third-party/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-ware/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-ware/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/renren-fast/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/renren-fast/src/main/resources" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>
