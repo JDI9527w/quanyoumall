@@ -3,8 +3,10 @@ package com.wzy.quanyoumall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.product.entity.CategoryEntity;
+import com.wzy.quanyoumall.product.vo.Catelog2Vo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品三级分类
@@ -15,7 +17,7 @@ import java.util.List;
  */
 public interface CategoryService extends IService<CategoryEntity> {
 
-    R treeSelectCategory();
+    List<CategoryEntity> treeSelectCategory();
 
     R removeByIds(List<Long> ids);
 
@@ -31,8 +33,14 @@ public interface CategoryService extends IService<CategoryEntity> {
 
     /**
      * 更新及之后要做的一些事
+     *
      * @param category
      */
     void updateAndThen(CategoryEntity category);
+
+
+    List<CategoryEntity> getLevel1Categorys();
+
+    Map<String, List<Catelog2Vo>> getCatalogJson();
 }
 

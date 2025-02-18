@@ -17,8 +17,8 @@ package com.wzy.quanyoumall.common.exception;
 public enum bizCodeEnum {
     UNKNOW_EXCEPTION(10000, "未知异常"),
     VALID_EXCEPTION(10001, "参数校验失败"),
-    PRODUCT_UP_EXCEPTION(11000, "商品上架失败");
-
+    PRODUCT_UP_EXCEPTION(11000, "商品上架失败"),
+    PRODUCT_CATALOG_DEL_EXCEPTION(11100,"商品分类删除异常");
     private final int code;
     private final String msg;
 

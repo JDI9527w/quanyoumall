@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class ProductHystrixClientFacotry implements FallbackFactory<ProductFeignService> {
+public class ProductHystrixClientFactory implements FallbackFactory<ProductFeignService> {
     @Override
     public ProductFeignService create(Throwable cause) {
         log.error("发生异常{}","异常信息{}",cause,cause.getMessage());

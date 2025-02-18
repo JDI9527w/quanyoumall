@@ -19,10 +19,12 @@ import com.wzy.quanyoumall.product.vo.Bounds;
 import com.wzy.quanyoumall.product.vo.Images;
 import com.wzy.quanyoumall.product.vo.SpuSaveVo;
 import com.wzy.quanyoumall.product.vo.es.SkuEsVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Service
 public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity> implements SpuInfoService {
 
@@ -50,6 +52,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
     private SkuSaleAttrValueService skuSaleAttrValueService;
     @Autowired
     private CouponFeignService couponFeignService;
+    @Qualifier("com.wzy.quanyoumall.product.feign.WareFeignService")
     @Autowired
     private WareFeignService wareFeignService;
     @Autowired
@@ -156,7 +159,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
     public void upSpuById(Long spuId) {
         List<SkuInfoEntity> skuInfoEntities = skuInfoService.listSkuInfoBySpuId(spuId);
         List<Long> skuIds = skuInfoEntities.stream().map(SkuInfoEntity::getSkuId).collect(Collectors.toList());
-        // 查询库存 TODO:远程调用可能异常,加入hystrix 返回false数据
+        // 查询库存
         Map<Long, Boolean> stockMap = checkSkuStock(skuIds);
         // 查询可供检索的属性
         List<ProductAttrValueEntity> attrSpuList = productAttrValueService.listGetNeedSearchAttrBySpuId(spuId);
@@ -183,13 +186,14 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
             item.setCatalogName(categoryName);
             item.setAttrs(attrsList);
         });
-        // TODO:幂等性问题,后期可以加入消息队列,或者新建表,如果商品上架成功,将商品id插入表中,上架前,先查询表,没有再上.有就更新?
+        //  幂等性问题,后期可以加入消息队列,或者新建表,如果商品上架成功,将商品id插入表中,上架前,先查询表,没有再上.有就更新?
+        //  测试不会发生，elasticsearch的bulk如果包含id会执行更新操作，不会插入新值。搁置。
         R productUpRes = searchFeignService.productUp(skuEsVoList);
         if (productUpRes.getCode() == 0) {
             spuInfoEntity.setPublishStatus(ProductConstant.StatusEnum.UP_STATE.getCode());
             baseMapper.updateById(spuInfoEntity);
         } else {
-
+            log.error(productUpRes.toString());
         }
     }
 

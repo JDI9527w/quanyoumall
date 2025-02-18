@@ -34,6 +34,24 @@ spring:
             - Path=/api/**
           filters:
             - RewritePath=/api/?(?<segment>.*), /renren-fast/$\{segment}
+
+        - id: quanyoumall_host_product_route
+          uri: lb://quanyoumall-product
+          predicates:
+            - Host=7rfmwr.natappfree.cc
+            - Path=/product/**
+
+        - id: quanyoumall_host_search_route
+          uri: lb://quanyoumall-search
+          predicates:
+            - Host=7rfmwr.natappfree.cc
+            - Path=/es/**
+
+        - id: quanyoumall_host_ware_route
+          uri: lb://quanyoumall-ware
+          predicates:
+            - Host=7rfmwr.natappfree.cc
+            - Path=/ware/**
     nacos:
       discovery:
         server-addr: localhost:8848

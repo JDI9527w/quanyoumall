@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -27,7 +28,8 @@ public class CategoryController {
      */
     @GetMapping("/tree")
     public R tree() {
-        return categoryService.treeSelectCategory();
+        List<CategoryEntity> categoryEntities = categoryService.treeSelectCategory();
+        return R.ok().put("data", categoryEntities);
     }
 
 

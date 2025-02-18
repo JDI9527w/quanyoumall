@@ -28,8 +28,8 @@ public class EsSaveController {
         try {
             flag = productSaveService.productUp(skuEsVoList);
         } catch (IOException e) {
+            flag = false;
             log.error(e.getMessage(), e.getStackTrace(), e.getClass());
-            return R.error(bizCodeEnum.PRODUCT_UP_EXCEPTION.getCode(), bizCodeEnum.PRODUCT_UP_EXCEPTION.getMsg());
         }
         if (flag) {
             return R.ok();
