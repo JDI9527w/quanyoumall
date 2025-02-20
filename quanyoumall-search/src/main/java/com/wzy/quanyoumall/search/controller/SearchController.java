@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/es/search")
-public class MainController {
+public class SearchController {
 
     @Autowired
     private MallSearchService mallSearchService;
