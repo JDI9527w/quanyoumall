@@ -1,16 +1,34 @@
 package com.wzy.quanyoumall.search.config;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.json.jackson.JacksonJsonpMapper;
-import co.elastic.clients.transport.ElasticsearchTransport;
-import co.elastic.clients.transport.rest_client.RestClientTransport;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootConfiguration
+public class ElasticsearchConfig {
+
+    public static final RequestOptions COMMON_OPTIONS;
+
+    static {
+        RequestOptions.Builder builder = RequestOptions.DEFAULT.toBuilder();
+        // builder.addHeader("Authorization", "Bearer " + TOKEN);
+        // builder.setHttpAsyncResponseConsumerFactory(
+        //         new HttpAsyncResponseConsumerFactory
+        //                 .HeapBufferedResponseConsumerFactory(30 * 1024 * 1024 * 1024));
+        COMMON_OPTIONS = builder.build();
+    }
+
+    @Bean
+    public RestHighLevelClient esRestClient() {
+        return new RestHighLevelClient(
+                RestClient.builder(
+                        new HttpHost("8.152.219.128", 9200, "http")));
+    }
+}
+/*@SpringBootConfiguration
 public class ElasticsearchConfig {
     @Bean
     public ElasticsearchClient elasticsearchClient() {
@@ -31,4 +49,4 @@ public class ElasticsearchConfig {
         RequestOptions.Builder builder = RequestOptions.DEFAULT.toBuilder();
         COMMON_OPTIONS = builder.build();
     }
-}
+}*/

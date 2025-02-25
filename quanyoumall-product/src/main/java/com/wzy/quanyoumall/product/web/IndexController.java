@@ -39,7 +39,7 @@ public class IndexController {
         return "index";
     }
 
-    /*@ResponseBody
+    @ResponseBody
     @GetMapping("/index/catalog.json")
     public Map<String, List<Catelog2Vo>> getCatalogJson() {
 
@@ -47,6 +47,5 @@ public class IndexController {
         return catalogJson;
 
     }
-*/
 
 }

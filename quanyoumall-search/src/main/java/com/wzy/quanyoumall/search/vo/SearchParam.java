@@ -15,7 +15,7 @@ public class SearchParam {
     // 仅显示有货
     private Integer hasStock;
     // 价格区间
-    private String skuPrice;
+    private String price;
     // 品牌id 可以多选
     private List<Long> brandId;
     // 按照属性进行筛选

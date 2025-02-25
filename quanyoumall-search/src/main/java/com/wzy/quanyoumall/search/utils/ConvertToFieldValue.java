@@ -1,15 +1,17 @@
 package com.wzy.quanyoumall.search.utils;
 
-import co.elastic.clients.elasticsearch._types.FieldValue;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 用于将参数转换为Field类的工具类.
+ */
 public class ConvertToFieldValue {
 
-    public static <T> List<FieldValue> convertWithList(List<T> list) {
+    /*public static <T> List<FieldValue> convertWithList(List<T> list) {
         List<FieldValue> fieldValueList = new ArrayList<>();
-        if (list.size() > 0) {
+        if (list != null && list.size() > 0) {
             Class<?> paramClazz = list.get(0).getClass();
             if (paramClazz.isInstance(FieldValue.Kind.Long.getClass())) {
                 for (T t : list) {
@@ -37,5 +39,5 @@ public class ConvertToFieldValue {
             }
         }
         return fieldValueList;
-    }
+    }*/
 }

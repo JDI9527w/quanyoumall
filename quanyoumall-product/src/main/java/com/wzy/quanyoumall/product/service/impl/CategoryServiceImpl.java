@@ -10,8 +10,6 @@ import com.wzy.quanyoumall.product.mapper.CategoryMapper;
 import com.wzy.quanyoumall.product.service.*;
 import com.wzy.quanyoumall.product.vo.Catelog2Vo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,8 +95,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
         return baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("show_status", 1).eq("cat_level", 1));
     }
 
-    @Cacheable(value = "category", key = "'CatalogJson'")
-    @CacheEvict(value = "ca", allEntries = true)
+    //    @Cacheable(value = "category", key = "'CatalogJson'")
+//    @CacheEvict(value = "ca", allEntries = true)
     @Override
     public Map<String, List<Catelog2Vo>> getCatalogJson() {
         List<CategoryEntity> categoryEntities = this.treeSelectCategory();

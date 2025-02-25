@@ -23,6 +23,4 @@ public class Catelog2Vo {
         private String id;
         private String name;
     }
-
-
 }
