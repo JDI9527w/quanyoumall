@@ -13,6 +13,7 @@ import com.wzy.quanyoumall.product.service.AttrAttrgroupRelationService;
 import com.wzy.quanyoumall.product.service.AttrGroupService;
 import com.wzy.quanyoumall.product.service.AttrService;
 import com.wzy.quanyoumall.product.vo.AttrGroupVo;
+import com.wzy.quanyoumall.product.vo.SpuItemAttrGroupVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,5 +83,10 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
         }
         this.removeBatchByIds(attrGroupIds);
         return existIdSet;
+    }
+
+    @Override
+    public List<SpuItemAttrGroupVo> listGetAttrGroupAndAttrBySpuId(Long spuId, Long catalogId) {
+        return baseMapper.listGetAttrGroupAndAttrBySpuId(spuId, catalogId);
     }
 }

@@ -32,5 +32,27 @@
             FROM pms_attr_attrgroup_relation paar)
     </select>
 
+    <resultMap id="SpuItemAttrGroupVo" type="com.wzy.quanyoumall.product.vo.SpuItemAttrGroupVo">
+        <result property="groupName" column="attr_group_name"/>
+        <collection property="attrs" ofType="com.wzy.quanyoumall.product.vo.Attr">
+            <result property="attrId" column="attr_id"/>
+            <result property="attrName" column="attr_name"/>
+            <result property="attrValue" column="attr_value"/>
+        </collection>
+    </resultMap>
+    <select id="listGetAttrGroupAndAttrBySpuId" resultMap="SpuItemAttrGroupVo">
+        SELECT
+            pag.attr_group_name,
+            paar.attr_id,
+            ppav.attr_name,
+            ppav.attr_value
+        FROM
+            pms_attr_group pag
+                LEFT JOIN pms_attr_attrgroup_relation paar ON paar.attr_group_id = pag.attr_group_id
+                left join pms_product_attr_value ppav on ppav.attr_id = paar.attr_id
+        WHERE
+            pag.catelog_id = #{catalogId} and ppav.spu_id = #{spuId}
+    </select>
+
 
 </mapper>

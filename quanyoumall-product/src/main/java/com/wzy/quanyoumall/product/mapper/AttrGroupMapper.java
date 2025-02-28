@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.product.entity.AttrEntity;
 import com.wzy.quanyoumall.product.entity.AttrGroupEntity;
+import com.wzy.quanyoumall.product.vo.SpuItemAttrGroupVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,4 +26,6 @@ public interface AttrGroupMapper extends BaseMapper<AttrGroupEntity> {
                                               @Param("attrGroupId") String attrGroupId,
                                               @Param("paramName") String paramName,
                                               @Param("attrType") int attrType);
+
+    List<SpuItemAttrGroupVo> listGetAttrGroupAndAttrBySpuId(@Param("spuId") Long spuId, @Param("catalogId") Long catalogId);
 }

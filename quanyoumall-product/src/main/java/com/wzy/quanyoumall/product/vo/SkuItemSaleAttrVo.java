@@ -1,12 +1,15 @@
 package com.wzy.quanyoumall.product.vo;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
+@ToString
 @Data
 public class SkuItemSaleAttrVo {
     private Long attrId;
     private String attrName;
-    private List<AttrValueWithSkuIdVo> attrValues;
+    private String attrValues;
+//    private List<AttrValueWithSkuIdVo> attrValues;
 }

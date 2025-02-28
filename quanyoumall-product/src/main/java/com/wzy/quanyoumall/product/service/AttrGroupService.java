@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.wzy.quanyoumall.product.entity.AttrEntity;
 import com.wzy.quanyoumall.product.entity.AttrGroupEntity;
 import com.wzy.quanyoumall.product.vo.AttrGroupVo;
+import com.wzy.quanyoumall.product.vo.SpuItemAttrGroupVo;
 
 import java.util.List;
 import java.util.Set;
@@ -22,6 +23,7 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
 
     /**
      * 通过属性组id获取关联的属性列表
+     *
      * @param attrGroupId
      * @return
      */
@@ -29,10 +31,11 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
 
     /**
      * 通过分组id 和 参数查询 关联商品属性分页列表
-     * @param page 分页条件
+     *
+     * @param page        分页条件
      * @param attrGroupId
-     * @param paramName 查询条件
-     * @param attrType 查询类型.
+     * @param paramName   查询条件
+     * @param attrType    查询类型.
      * @return
      */
     Page<AttrEntity> selectAllNoAttrByGroupId(Page<AttrEntity> page,
@@ -42,11 +45,14 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
 
     /**
      * 通过分类id查询相关分组以及分组的属性.
+     *
      * @param catId
      * @return
      */
     List<AttrGroupVo> getAttrListByCatId(Long catId);
 
     Set<Long> removeByGroupIds(List<Long> attrGroupIds);
+
+    List<SpuItemAttrGroupVo> listGetAttrGroupAndAttrBySpuId(Long spuId, Long catalogId);
 }
 

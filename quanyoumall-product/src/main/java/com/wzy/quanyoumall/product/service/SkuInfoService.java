@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wzy.quanyoumall.product.entity.SkuInfoEntity;
 import com.wzy.quanyoumall.product.vo.SkuCheckVo;
+import com.wzy.quanyoumall.product.vo.SkuItemVo;
 
 import java.util.List;
 
@@ -25,5 +26,13 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
      * @return
      */
     List<SkuInfoEntity> listSkuInfoBySpuId(Long spuId);
+
+    /**
+     * 通过skuId查询商品详情
+     *
+     * @param skuId
+     * @return
+     */
+    SkuItemVo getSkuDetailById(Long skuId);
 }
 
