@@ -766,11 +766,11 @@
                 <a href="/static/search/#">游戏手机</a>
             </div>
         </div>
-        <div class="JD_ipone_one c">
-            <!-- 遍历面包屑功能 -->
+       <!-- <div class="JD_ipone_one c">
+            &lt;!&ndash; 遍历面包屑功能 &ndash;&gt;
             <a th:href="${nav.link}" th:each="nav:${result.navs}"><span th:text="${nav.navName}"></span>：<span
                     th:text="${nav.navValue}"></span> x</a>
-        </div>
+        </div>-->
         <i><img src="/static/search/image/right-@1x.png" alt=""></i>
     </div>
 </div>
@@ -1216,7 +1216,7 @@
                                 <a href="/static/search/#">关注</a>
                             </div>
                             <p class="da">
-                                <a th:href="|http://item.gulimall.com/${product.skuId}.html|">
+                                <a th:href="|http://8.152.219.128/product/item/${product.skuId}.html|">
                                     <img class="dim" th:src="${product.skuDefaultImg}">
                                 </a>
                             </p>

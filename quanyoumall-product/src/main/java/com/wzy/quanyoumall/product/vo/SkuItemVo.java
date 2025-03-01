@@ -19,7 +19,7 @@ public class SkuItemVo {
     //3、获取spu的销售属性组合
     private List<SkuItemSaleAttrVo> saleAttr;
     //4、获取spu的介绍
-    private SpuInfoDescEntity desp;
+    private SpuInfoDescEntity descp;
     //5、获取spu的规格参数信息
     private List<SpuItemAttrGroupVo> groupAttrs;
 
