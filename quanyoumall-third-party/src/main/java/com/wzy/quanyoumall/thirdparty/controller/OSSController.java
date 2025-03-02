@@ -1,4 +1,4 @@
-package com.wzy.quanyoumall.thirdparty;
+package com.wzy.quanyoumall.thirdparty.controller;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.common.utils.BinaryUtil;

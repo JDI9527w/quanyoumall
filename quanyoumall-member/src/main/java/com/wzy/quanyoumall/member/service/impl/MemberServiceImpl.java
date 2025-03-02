@@ -1,29 +1,14 @@
 package com.wzy.quanyoumall.member.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.wzy.quanyoumall.common.utils.PageUtils;
-import com.wzy.quanyoumall.common.utils.Query;
-
-import com.wzy.quanyoumall.member.mapper.MemberMapper;
 import com.wzy.quanyoumall.member.entity.MemberEntity;
+import com.wzy.quanyoumall.member.mapper.MemberMapper;
 import com.wzy.quanyoumall.member.service.MemberService;
+import org.springframework.stereotype.Service;
 
 
 @Service
 public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> implements MemberService {
 
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<MemberEntity> page = this.page(
-                new Query<MemberEntity>().getPage(params),
-                new QueryWrapper<MemberEntity>()
-        );
-
-        return new PageUtils(page);
-    }
 
 }

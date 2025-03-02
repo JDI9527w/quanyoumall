@@ -1,6 +1,5 @@
 package com.wzy.quanyoumall.order.controller;
 
-import com.wzy.quanyoumall.common.utils.PageUtils;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.order.entity.UndoLogEntity;
 import com.wzy.quanyoumall.order.service.UndoLogService;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Map;
 
 
 /**
@@ -25,12 +23,6 @@ public class UndoLogController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = undoLogService.queryPage(params);
-
-        return R.ok().put("page", page);
-    }
 
 
     /**

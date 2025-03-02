@@ -1,6 +1,5 @@
 package com.wzy.quanyoumall.coupon.controller;
 
-import com.wzy.quanyoumall.common.utils.PageUtils;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.coupon.entity.CouponSpuRelationEntity;
 import com.wzy.quanyoumall.coupon.service.CouponSpuRelationService;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Map;
 
 
 /**
@@ -27,12 +25,6 @@ public class CouponSpuRelationController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = couponSpuRelationService.queryPage(params);
-
-        return R.ok().put("page", page);
-    }
 
 
     /**

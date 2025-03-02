@@ -1,10 +1,7 @@
 package com.wzy.quanyoumall.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.wzy.quanyoumall.common.utils.PageUtils;
-import com.wzy.quanyoumall.common.utils.Query;
 import com.wzy.quanyoumall.product.entity.AttrEntity;
 import com.wzy.quanyoumall.product.entity.ProductAttrValueEntity;
 import com.wzy.quanyoumall.product.mapper.ProductAttrValueMapper;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -58,15 +54,6 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueMap
         this.saveBatch(paveList);
     }
 
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<ProductAttrValueEntity> page = this.page(
-                new Query<ProductAttrValueEntity>().getPage(params),
-                new QueryWrapper<ProductAttrValueEntity>()
-        );
-
-        return new PageUtils(page);
-    }
 
     @Override
     public List<ProductAttrValueEntity> listGetNeedSearchAttrBySpuId(Long spuId) {

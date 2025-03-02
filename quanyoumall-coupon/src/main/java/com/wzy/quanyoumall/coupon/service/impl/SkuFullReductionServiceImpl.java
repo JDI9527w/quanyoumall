@@ -1,12 +1,8 @@
 package com.wzy.quanyoumall.coupon.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wzy.quanyoumall.common.to.MemberPrice;
 import com.wzy.quanyoumall.common.to.SkuReductionTo;
-import com.wzy.quanyoumall.common.utils.PageUtils;
-import com.wzy.quanyoumall.common.utils.Query;
 import com.wzy.quanyoumall.coupon.entity.MemberPriceEntity;
 import com.wzy.quanyoumall.coupon.entity.SkuFullReductionEntity;
 import com.wzy.quanyoumall.coupon.entity.SkuLadderEntity;
@@ -20,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -68,14 +63,5 @@ public class SkuFullReductionServiceImpl extends ServiceImpl<SkuFullReductionMap
         memberPriceService.saveBatch(memberPriceList);
     }
 
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<SkuFullReductionEntity> page = this.page(
-                new Query<SkuFullReductionEntity>().getPage(params),
-                new QueryWrapper<SkuFullReductionEntity>()
-        );
-
-        return new PageUtils(page);
-    }
 
 }
