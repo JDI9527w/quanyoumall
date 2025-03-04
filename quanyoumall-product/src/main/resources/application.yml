@@ -10,11 +10,25 @@ spring:
         username:
         password:
   datasource:
+    hikari:
+      minimum-idle: 3
+      maximum-pool-size: 10
+      max-lifetime: 30000   #不能小于30秒，否则默认回到1800秒
+      connection-test-query: SELECT 1
     #MySQL配置
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://8.152.219.128:3306/quanyoumall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password:
+  jackson:
+    date-format: yyyy-MM-dd hh:mm:ss
+  redis:
+    host: 8.152.219.128
+    port: 6379
+  thymeleaf:
+    cache: false
+
+
 mybatis-plus:
   mapper-locations: classpath:com/wzy/quanyoumall/product/mapper/impl/*.xml
   global-config:
@@ -25,3 +39,8 @@ mybatis-plus:
 logging:
   level:
     com.wzy.quanyoumall: debug
+quanyoumall:
+  thread:
+    core-size: 50
+    max-size: 100
+    keep-alive-time: 20

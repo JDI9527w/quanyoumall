@@ -8,6 +8,8 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
-
   thymeleaf:
     cache: false
+  redis:
+    host: 8.152.219.128
+    port: 6379

@@ -8,7 +8,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://8.152.219.128:3306/quanyoumall_ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: root
+    password:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
 mybatis-plus:
   mapper-locations: classpath:com/wzy/quanyoumall/member/mapper/impl/*.xml
   global-config:

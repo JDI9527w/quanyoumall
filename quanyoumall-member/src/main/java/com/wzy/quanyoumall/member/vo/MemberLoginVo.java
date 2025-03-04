@@ -1,9 +1,9 @@
-package com.wzy.quanyoumall.vo;
+package com.wzy.quanyoumall.member.vo;
 
 import lombok.Data;
 
 @Data
-public class UserLoginVo {
+public class MemberLoginVo {
 
     private String username;
 

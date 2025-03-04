@@ -3,16 +3,30 @@ server:
     port: 8084
 
 spring:
+  application:
+    name: quanyoumall-ware
   datasource:
     #MySQL配置
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://8.152.219.128:3306/quanyoumall_wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: root
+    password:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  jackson:
+    date-format: yyyy-MM-dd hh:mm:ss
+
 mybatis-plus:
   mapper-locations: classpath:com/wzy/quanyoumall/ware/mapper/impl/*.xml
   global-config:
     db-config:
       id-type: auto
-
+logging:
+  level:
+    com.wzy.quanyoumall: debug
+feign:
+  hystrix:
+    enabled: true
 
