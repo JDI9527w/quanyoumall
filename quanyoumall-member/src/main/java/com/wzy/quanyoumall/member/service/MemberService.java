@@ -6,6 +6,9 @@ import com.wzy.quanyoumall.common.exception.UsernameExistException;
 import com.wzy.quanyoumall.member.entity.MemberEntity;
 import com.wzy.quanyoumall.member.vo.MemberLoginVo;
 import com.wzy.quanyoumall.member.vo.MemberRegisterVo;
+import com.wzy.quanyoumall.member.vo.SocialAccountVo;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 会员
@@ -29,7 +32,7 @@ public interface MemberService extends IService<MemberEntity> {
      * @param username
      * @return
      */
-    MemberEntity checkUserNameExist(String username);
+    MemberEntity checkUserNameExist(@NotNull String username);
 
     /**
      * 检测手机号占用
@@ -37,7 +40,7 @@ public interface MemberService extends IService<MemberEntity> {
      * @param phone
      * @return
      */
-    MemberEntity checkPhoneExist(String phone);
+    MemberEntity checkPhoneExist(@NotNull String phone);
 
     /**
      * 检测邮箱占用
@@ -45,9 +48,22 @@ public interface MemberService extends IService<MemberEntity> {
      * @param email
      * @return
      */
-    MemberEntity checkEmailExist(String email);
+    MemberEntity checkEmailExist(@NotNull String email);
 
-    Boolean checkMember(MemberLoginVo memberLoginVo);
+    /**
+     * 登录验证
+     *
+     * @param memberLoginVo
+     * @return
+     */
+    MemberEntity login(MemberLoginVo memberLoginVo);
 
+    /**
+     * 第三方账户登录业务
+     *
+     * @param socialAccountVo
+     * @return
+     */
+    MemberEntity loginBySocialAccount(SocialAccountVo socialAccountVo);
 }
 

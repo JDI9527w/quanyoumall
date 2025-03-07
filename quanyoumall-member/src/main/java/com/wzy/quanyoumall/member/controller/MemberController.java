@@ -6,8 +6,10 @@ import com.wzy.quanyoumall.common.exception.UsernameExistException;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.member.entity.MemberEntity;
 import com.wzy.quanyoumall.member.service.MemberService;
+import com.wzy.quanyoumall.member.vo.SocialAccountVo;
 import com.wzy.quanyoumall.member.vo.MemberLoginVo;
 import com.wzy.quanyoumall.member.vo.MemberRegisterVo;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,11 +90,16 @@ public class MemberController {
 
     @PostMapping("/memberLogin")
     public R checkMember(@RequestBody MemberLoginVo memberLoginVo) {
-        Boolean flag = memberService.checkMember(memberLoginVo);
-        if (flag) {
-            return R.ok();
+        MemberEntity loginUser = memberService.login(memberLoginVo);
+        if (ObjectUtils.isNotEmpty(loginUser)) {
+            return R.ok().put("data",loginUser);
         }
         return R.error(bizCodeEnum.CHECK_USER_ERROR_EXCEPTION.getCode(), bizCodeEnum.CHECK_USER_ERROR_EXCEPTION.getMsg());
+    }
+    @PostMapping("/loginBySocial")
+    public R loginBySocialAccount(@RequestBody SocialAccountVo socialAccountVo){
+        MemberEntity memberEntity = memberService.loginBySocialAccount(socialAccountVo);
+        return R.ok().put("data",memberEntity);
     }
 
 

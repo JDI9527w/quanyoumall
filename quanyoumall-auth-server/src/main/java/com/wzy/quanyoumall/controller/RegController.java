@@ -1,8 +1,8 @@
 package com.wzy.quanyoumall.controller;
 
+import com.wzy.quanyoumall.common.constant.AuthServerConstant;
 import com.wzy.quanyoumall.common.constant.bizCodeEnum;
 import com.wzy.quanyoumall.common.utils.R;
-import com.wzy.quanyoumall.constant.AuthServerConstant;
 import com.wzy.quanyoumall.feign.MemberFeignService;
 import com.wzy.quanyoumall.feign.ThirdPartyFeignService;
 import com.wzy.quanyoumall.vo.UserRegisterVo;

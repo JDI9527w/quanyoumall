@@ -1,6 +1,6 @@
 package com.wzy.quanyoumall.search.exception;
 
-import com.wzy.quanyoumall.common.exception.bizCodeEnum;
+import com.wzy.quanyoumall.common.constant.bizCodeEnum;
 import com.wzy.quanyoumall.common.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;

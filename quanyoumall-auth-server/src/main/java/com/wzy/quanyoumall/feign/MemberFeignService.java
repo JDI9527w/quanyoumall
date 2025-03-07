@@ -1,6 +1,7 @@
 package com.wzy.quanyoumall.feign;
 
 import com.wzy.quanyoumall.common.utils.R;
+import com.wzy.quanyoumall.vo.GiteeUserVo;
 import com.wzy.quanyoumall.vo.UserLoginVo;
 import com.wzy.quanyoumall.vo.UserRegisterVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -13,5 +14,8 @@ public interface MemberFeignService {
     R registerMember(@RequestBody UserRegisterVo userRegisterVo);
 
     @PostMapping("member/member/memberLogin")
-    R checkMember(@RequestBody UserLoginVo userLoginVo);
+    R login(@RequestBody UserLoginVo userLoginVo);
+
+    @PostMapping("member/member/loginBySocial")
+    R loginBySocialAccount(@RequestBody GiteeUserVo giteeUserVo);
 }

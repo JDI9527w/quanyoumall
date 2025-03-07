@@ -1,6 +1,6 @@
 package com.wzy.quanyoumall.search.controller;
 
-import com.wzy.quanyoumall.common.exception.bizCodeEnum;
+import com.wzy.quanyoumall.common.constant.bizCodeEnum;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.search.service.ProductSaveService;
 import com.wzy.quanyoumall.search.vo.SkuEsVo;

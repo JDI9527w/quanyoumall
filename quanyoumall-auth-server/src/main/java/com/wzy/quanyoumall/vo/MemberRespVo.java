@@ -1,30 +1,15 @@
-package com.wzy.quanyoumall.member.entity;
+package com.wzy.quanyoumall.vo;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * 会员
- *
- * @author wzy
- * @email
- * @date 2025-01-05 21:40:52
- */
 @Data
-@TableName("ums_member")
-public class MemberEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class MemberRespVo {
 
     /**
      * id
      */
-    @TableId
     private Long id;
     /**
      * 会员等级id
@@ -93,7 +78,6 @@ public class MemberEntity implements Serializable {
     /**
      * 注册时间
      */
-    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**

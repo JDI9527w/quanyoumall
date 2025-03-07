@@ -1,6 +1,6 @@
 package com.wzy.quanyoumall.thirdparty.component;
 
-import com.wzy.quanyoumall.util.HttpUtils;
+import com.wzy.quanyoumall.common.utils.HttpUtils;
 import lombok.Data;
 import org.apache.http.HttpResponse;
 import org.springframework.boot.context.properties.ConfigurationProperties;
