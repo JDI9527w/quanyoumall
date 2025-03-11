@@ -1,7 +1,5 @@
-package com.wzy.quanyoumall.product.entity;
+package com.wzy.quanyoumall.to;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,19 +13,13 @@ import java.math.BigDecimal;
  * @date 2025-01-05 18:48:48
  */
 @Data
-@TableName("pms_sku_info")
-public class SkuInfoEntity implements Serializable {
+public class SkuInfoTo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
      * skuId
      */
-    @TableId
     private Long skuId;
-    /**
-     * spuId
-     */
-    private Long spuId;
     /**
      * sku名称
      */
@@ -36,10 +28,6 @@ public class SkuInfoEntity implements Serializable {
      * sku介绍描述
      */
     private String skuDesc;
-    /**
-     * 所属分类id
-     */
-    private Long catalogId;
     /**
      * 品牌id
      */
@@ -60,9 +48,4 @@ public class SkuInfoEntity implements Serializable {
      * 价格
      */
     private BigDecimal price;
-    /**
-     * 销量
-     */
-    private Long saleCount;
-
 }

@@ -1,6 +1,5 @@
 package com.wzy.quanyoumall.product.web;
 
-import com.sun.org.glassfish.external.statistics.annotations.Reset;
 import com.wzy.quanyoumall.product.entity.CategoryEntity;
 import com.wzy.quanyoumall.product.service.CategoryService;
 import com.wzy.quanyoumall.product.vo.Catelog2Vo;

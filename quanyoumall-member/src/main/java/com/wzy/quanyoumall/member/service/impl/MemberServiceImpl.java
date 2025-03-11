@@ -108,6 +108,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
                 memberEntity.setNickname(socialAccountVo.getName());
             }
             memberEntity.setEmail(socialAccountVo.getEmail());
+            memberEntity.setThirdAccountId1(socialAccountVo.getId());
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
             String randomPwd = bCryptPasswordEncoder.encode(UUID.randomUUID().toString().substring(0, 8));
             memberEntity.setPassword(randomPwd);

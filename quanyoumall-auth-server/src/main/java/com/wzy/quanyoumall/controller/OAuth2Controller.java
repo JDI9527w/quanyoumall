@@ -8,16 +8,16 @@ import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.feign.MemberFeignService;
 import com.wzy.quanyoumall.vo.GiteeUserResp;
 import com.wzy.quanyoumall.vo.GiteeUserVo;
-import com.wzy.quanyoumall.vo.MemberRespVo;
+import com.wzy.quanyoumall.common.vo.MemberRespVo;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.session.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +29,7 @@ public class OAuth2Controller {
     private MemberFeignService memberFeignService;
 
     @GetMapping("/OAuth2/gitee/success")
-    public String giteeLogin(@RequestParam("code") String code, Session session) {
+    public String giteeLogin(@RequestParam("code") String code, HttpSession session) {
         String host = "https://gitee.com";
         String path = "/oauth/token";
         String method = "POST";
@@ -49,13 +49,13 @@ public class OAuth2Controller {
                 querys.put("access_token", giteeUserResp.getAccessToken());
                 HttpResponse getUserResp = HttpUtils.doGet(host, "/api/v5/user", "GET", headers, querys);
                 if (getUserResp.getStatusLine().getStatusCode() == 200) {
-                    String giteeUserStr = EntityUtils.toString(response.getEntity());
+                    String giteeUserStr = EntityUtils.toString(getUserResp.getEntity());
                     GiteeUserVo giteeUserVo = JSON.parseObject(giteeUserStr, GiteeUserVo.class);
                     R r = memberFeignService.loginBySocialAccount(giteeUserVo);
                     MemberRespVo memberRespVo = r.getData("data", new TypeReference<MemberRespVo>() {
                     });
                     //TODO:集成security后生成JWT存入redis,并返回前端.
-                    session.setAttribute(AuthServerConstant.LOGIN_USER,memberRespVo);
+                    session.setAttribute(AuthServerConstant.LOGIN_USER, memberRespVo);
                     return "redirect://8.152.219.128/product/index.html";
                 }
             }

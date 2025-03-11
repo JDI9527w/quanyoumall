@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/quanyoumall-auth-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/quanyoumall-auth-server/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-cart/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quanyoumall-cart/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/quanyoumall-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/quanyoumall-coupon/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/quanyoumall-coupon/src/main/resources" charset="UTF-8" />

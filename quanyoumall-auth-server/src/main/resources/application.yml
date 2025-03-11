@@ -13,3 +13,5 @@ spring:
   redis:
     host: 8.152.219.128
     port: 6379
+  session:
+    store-type: redis

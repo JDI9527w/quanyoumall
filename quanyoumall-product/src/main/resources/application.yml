@@ -7,8 +7,6 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
-        username:
-        password:
   datasource:
     hikari:
       minimum-idle: 3
@@ -27,7 +25,10 @@ spring:
     port: 6379
   thymeleaf:
     cache: false
-
+  session:
+    store-type: redis
+  cache:
+    type: redis
 
 mybatis-plus:
   mapper-locations: classpath:com/wzy/quanyoumall/product/mapper/impl/*.xml

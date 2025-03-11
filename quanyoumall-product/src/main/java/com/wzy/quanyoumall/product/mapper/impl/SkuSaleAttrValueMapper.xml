@@ -22,6 +22,11 @@
         where psi.spu_id = #{spuId}
         group by attr_id,attr_name
     </select>
+    <select id="getSaleAttrListBySkuId" resultType="java.lang.String">
+        select concat(attr_name,':',attr_value)
+        from pms_sku_sale_attr_value pssav
+        where sku_id = #{skuId}
+    </select>
 
 
 </mapper>
