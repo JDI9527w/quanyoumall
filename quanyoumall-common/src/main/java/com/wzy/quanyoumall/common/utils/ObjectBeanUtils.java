@@ -2,11 +2,12 @@ package com.wzy.quanyoumall.common.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
+import java.beans.PropertyDescriptor;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ObjectBeanUtils {
     /**
@@ -52,5 +53,24 @@ public class ObjectBeanUtils {
             throw new IllegalArgumentException("Key '" + key + "' not found in response map or its value is not a JSON string.");
         }
         return objectMapper.readValue(data, objectMapper.getTypeFactory().constructCollectionType(List.class, clazz));
+    }
+
+    /**
+     * 提取对象中值为null的字段名
+     * @param source
+     * @return
+     */
+    public static String[] getNullPropertyNames(Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        PropertyDescriptor[] pds = src.getPropertyDescriptors();
+        Set<String> emptyNames = new HashSet<String>();
+        for(PropertyDescriptor pd : pds) {
+            Object srcValue = src.getPropertyValue(pd.getName());
+            if (srcValue == null) {
+                emptyNames.add(pd.getName());
+            }
+        }
+        String[] result = new String[emptyNames.size()];
+        return emptyNames.toArray(result);
     }
 }
