@@ -29,7 +29,7 @@
 					   style="color: red;">免费注册</a>
 				</li>
 				<li class="spacer"></li>
-				<li><a href="http://order.gulimall.com/list.html">我的订单</a></li>
+				<li><a href="http://8.152.219.128/order/list.html">我的订单</a></li>
 				<li class="spacer"></li>
 			</ul>
 			<div style="clear: both;"></div>
@@ -76,7 +76,7 @@
 		</div>
 		<div class="One_ShopCon">
 			<h1 th:if="${cart.items == null}">
-				购物车还没有商品，<a href="http://gulimall.com/">去购物</a>
+				购物车还没有商品，<a href="8.152.219.128/product/index.html">去购物</a>
 			</h1>
 			<ul th:if="${cart.items != null}">
 				<li th:each="item:${cart.items}">
@@ -207,7 +207,7 @@
 <script src="/static/cart/js/index.js" charset="utf-8"></script>
 <script type="text/javascript">
 	function toTrade() {
-		window.location.href = "http://order.gulimall.com/toTrade";
+		window.location.href = "http://8.152.219.128/order/list.html";
 	}
 
 	function toItem(skuId) {
@@ -597,31 +597,8 @@
 		$(".One_mb").show();
 		$(".One_isDel").show();
 		var that = $(this);
-		//确定删除
-		/*        $(".One_isDel>div:last-child button:first-child").click(function(){
-                    $(".One_mb").hide();
-                    $(".One_isDel").hide();
-                    that.parent().parent().parent().parent().remove();
-                    // 移除结账固定定位
-                    // if($(".check").length==1){
-                    // 	$(".fix").remove();
-                    // }
-                    if($(".fix").offset().top>$(".fix1").offset().top){
-                        $(".fix").hide();
-                    }
-                    if($(".check").length==0){
-                        $(".allCheck").prop("checked",false);
-                        $(".sumNum").html("0");
-                        $(".fnt").html("￥ 0.00");
-                    }
-                })*/
 	})
-	/*    //页面滚动删除去结算固定定位隐藏
-        $(document).scroll(function(){
-            if($(".fix").offset().top>$(".fix1").offset().top){
-                $(".fix").hide();
-            }
-        })*/
+
 	$(".One_isDel>div:last-child button").mouseover(function () {
 		$(this).css("cursor", "pointer");
 	})
@@ -640,8 +617,6 @@
 		console.log("计算总价");
 		var zzj = 0;
 		$(".check").each(function () {
-
-
 			if ($(this).prop("checked")) {
 				console.log("check!!" + $(this).parents("ol").find(".zj").html());
 				var zj = $(this).parents("ol").find(".zj").html().substring(1);
@@ -776,8 +751,6 @@
 	function deleteItem() {
 		location.href = "http://8.152.219.128/cart/deleteItem?skuId=" + deleteId;
 	}
-
-
 
 </script>
 </html>

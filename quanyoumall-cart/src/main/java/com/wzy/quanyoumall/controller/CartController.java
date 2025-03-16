@@ -3,6 +3,7 @@ package com.wzy.quanyoumall.controller;
 import com.wzy.quanyoumall.interceptor.CartInterceptor;
 import com.wzy.quanyoumall.service.impl.CartServiceImpl;
 import com.wzy.quanyoumall.vo.CartItemVo;
+import com.wzy.quanyoumall.vo.CartVo;
 import com.wzy.quanyoumall.vo.UserInfoVo;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,11 @@ public class CartController {
     private CartServiceImpl cartService;
 
     @RequestMapping("/cart.html")
-    public String cartList() throws Exception {
+    public String cartList(Model model) throws Exception {
         UserInfoVo userInfoVo = CartInterceptor.threadLocal.get();
         if (ObjectUtils.isNotEmpty(userInfoVo)) {
+            CartVo cartVo = cartService.getCartByUser(userInfoVo);
+            model.addAttribute("cart", cartVo);
             return "cartList";
         }
         return "redirect://8.152.219.128/auth/login/login.html";
@@ -48,5 +51,43 @@ public class CartController {
         CartItemVo cartItemVo = cartService.getCartItemBySkuId(skuId, userInfoVo);
         model.addAttribute("cartItem", cartItemVo);
         return "success";
+    }
+
+    @GetMapping("/checkItem")
+    public String checkItem(@RequestParam("skuId") Long skuId, @RequestParam("checked") Integer checked) {
+        UserInfoVo userInfoVo = CartInterceptor.threadLocal.get();
+        if (ObjectUtils.isNotEmpty(userInfoVo)) {
+            CartItemVo cartItemVo = new CartItemVo();
+            cartItemVo.setSkuId(skuId);
+            cartItemVo.setCheck(checked == 0 ? false : true);
+            cartService.updateUserCartItem(cartItemVo, userInfoVo);
+            return "redirect://8.152.219.128/cart/cart.html";
+        }
+        return "redirect://8.152.219.128/auth/login/login.html";
+    }
+
+    @GetMapping("/countItem")
+    public String countItem(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num) {
+        UserInfoVo userInfoVo = CartInterceptor.threadLocal.get();
+        if (ObjectUtils.isNotEmpty(userInfoVo)) {
+            CartItemVo cartItemVo = new CartItemVo();
+            cartItemVo.setSkuId(skuId);
+            cartItemVo.setCount(num);
+            cartService.updateUserCartItem(cartItemVo, userInfoVo);
+            return "redirect://8.152.219.128/cart/cart.html";
+        }
+        return "redirect://8.152.219.128/auth/login/login.html";
+    }
+
+    @GetMapping("/deleteItem")
+    public String deleteItem(@RequestParam("skuId") Long skuId) {
+        UserInfoVo userInfoVo = CartInterceptor.threadLocal.get();
+        if (ObjectUtils.isNotEmpty(userInfoVo)) {
+            CartItemVo cartItemVo = new CartItemVo();
+            cartItemVo.setSkuId(skuId);
+            cartService.deleteUserCartItem(skuId, userInfoVo);
+            return "redirect://8.152.219.128/cart/cart.html";
+        }
+        return "redirect://8.152.219.128/auth/login/login.html";
     }
 }

@@ -1,6 +1,7 @@
 package com.wzy.quanyoumall.vo;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * 购物项内容
  */
+@ToString
 @Data
 public class CartItemVo {
 
@@ -36,7 +38,7 @@ public class CartItemVo {
      * @return
      */
     public BigDecimal getTotalPrice() {
-        return this.price.multiply(new BigDecimal("" + this.count));
+        return this.totalPrice;
     }
 
     public void setTotalPrice() {

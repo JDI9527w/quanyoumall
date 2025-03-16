@@ -1,6 +1,7 @@
 package com.wzy.quanyoumall.service;
 
 import com.wzy.quanyoumall.vo.CartItemVo;
+import com.wzy.quanyoumall.vo.CartVo;
 import com.wzy.quanyoumall.vo.UserInfoVo;
 
 import java.util.concurrent.ExecutionException;
@@ -28,4 +29,10 @@ public interface CartService {
      * @return
      */
     CartItemVo getCartItemBySkuId(Long skuId, UserInfoVo userInfoVo);
+
+    CartVo getCartByUser(UserInfoVo userInfoVo);
+
+    void updateUserCartItem(CartItemVo cartItemVo, UserInfoVo userInfoVo);
+
+    void deleteUserCartItem(Long skuId, UserInfoVo userInfoVo);
 }

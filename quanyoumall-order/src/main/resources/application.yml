@@ -8,11 +8,35 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://8.152.219.128:3306/quanyoumall_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: root
+    password:
+  rabbitmq:
+    host: 8.152.219.128
+    port: 5672
+    username:
+    password:
+    virtual-host: quanyoumall
+    publisher-confirm-type: CORRELATED
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  redis:
+    host: 8.152.219.128
+    port: 6379
+  session:
+    store-type: redis
+
 mybatis-plus:
   mapper-locations: classpath:com/wzy/quanyoumall/order/mapper/impl/*.xml
   global-config:
     db-config:
       id-type: auto
+
+quanyoumall:
+  thread:
+    core-size: 50
+    max-size: 100
+    keep-alive-time: 20
+
 
 
