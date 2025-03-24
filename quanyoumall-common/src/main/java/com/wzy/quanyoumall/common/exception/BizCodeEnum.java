@@ -1,4 +1,4 @@
-package com.wzy.quanyoumall.common.constant;
+package com.wzy.quanyoumall.common.exception;
 
 /***
  * 错误码和错误信息定义类
@@ -16,9 +16,10 @@ package com.wzy.quanyoumall.common.constant;
  *  13: 购物车
  *  14: 物流
  *  15: 用户
+ *  16: 仓储
  *
  */
-public enum bizCodeEnum {
+public enum BizCodeEnum {
     UNKNOW_EXCEPTION(10000, "未知异常"),
     VALID_EXCEPTION(10001, "参数校验失败"),
     SMS_CODE_EXCEPTION(10002, "验证码发送失败,请求频繁"),
@@ -26,11 +27,12 @@ public enum bizCodeEnum {
     PRODUCT_CATALOG_DEL_EXCEPTION(11100,"商品分类删除异常"),
     USER_EXIST_EXCEPTION(15001,"用户名已存在"),
     PHONE_EXIST_EXCEPTION(15002,"手机号已注册"),
-    CHECK_USER_ERROR_EXCEPTION(15003,"用户名或密码错误");
+    CHECK_USER_ERROR_EXCEPTION(15003,"用户名或密码错误"),
+    OUT_OF_STOCK_EXCEPTION(16001,"商品库存不足");
     private final int code;
     private final String msg;
 
-    bizCodeEnum(int code, String msg) {
+    BizCodeEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
