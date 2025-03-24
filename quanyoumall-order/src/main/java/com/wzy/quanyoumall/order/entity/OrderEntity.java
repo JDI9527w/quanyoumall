@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,6 +21,8 @@ import java.time.LocalDateTime;
  * @date 2025-01-05 21:37:50
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("oms_order")
 public class OrderEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -39,11 +44,6 @@ public class OrderEntity implements Serializable {
      * 使用的优惠券
      */
     private Long couponId;
-    /**
-     * create_time
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
     /**
      * 用户名
      */
@@ -189,8 +189,16 @@ public class OrderEntity implements Serializable {
      */
     private LocalDateTime commentTime;
     /**
+     * create_time
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+    /**
      * 修改时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime modifyTime;
 
 }

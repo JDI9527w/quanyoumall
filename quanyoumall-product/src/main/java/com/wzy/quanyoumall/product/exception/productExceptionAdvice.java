@@ -1,6 +1,6 @@
 package com.wzy.quanyoumall.product.exception;
 
-import com.wzy.quanyoumall.common.constant.bizCodeEnum;
+import com.wzy.quanyoumall.common.exception.BizCodeEnum;
 import com.wzy.quanyoumall.common.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
@@ -23,13 +23,13 @@ public class productExceptionAdvice {
         bindingResult.getFieldErrors().forEach((fieldError) -> {
             errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
         });
-        return R.error(bizCodeEnum.VALID_EXCEPTION.getCode(), bizCodeEnum.VALID_EXCEPTION.getMsg()).put("data", errorMap);
+        return R.error(BizCodeEnum.VALID_EXCEPTION.getCode(), BizCodeEnum.VALID_EXCEPTION.getMsg()).put("data", errorMap);
     }
 
     @ExceptionHandler(value = Throwable.class)
     public R handleExceptionb(Exception e) {
         e.printStackTrace();
         log.error(e.getMessage(), e.getStackTrace(), e.getClass());
-        return R.error(bizCodeEnum.UNKNOW_EXCEPTION.getCode(), bizCodeEnum.UNKNOW_EXCEPTION.getMsg());
+        return R.error(BizCodeEnum.UNKNOW_EXCEPTION.getCode(), BizCodeEnum.UNKNOW_EXCEPTION.getMsg());
     }
 }

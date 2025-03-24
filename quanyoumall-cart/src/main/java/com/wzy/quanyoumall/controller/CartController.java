@@ -12,8 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Controller
@@ -89,5 +91,11 @@ public class CartController {
             return "redirect://8.152.219.128/cart/cart.html";
         }
         return "redirect://8.152.219.128/auth/login/login.html";
+    }
+
+    @ResponseBody
+    @GetMapping("/checkedItems")
+    public List<CartItemVo> listGetCheckedItems(@RequestParam("memberId") Long memberId) {
+        return cartService.listGetCheckedItems(memberId);
     }
 }

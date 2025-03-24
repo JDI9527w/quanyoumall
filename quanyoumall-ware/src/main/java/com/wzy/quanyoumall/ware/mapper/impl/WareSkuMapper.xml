@@ -3,7 +3,7 @@
 
 <mapper namespace="com.wzy.quanyoumall.ware.mapper.WareSkuMapper">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.wzy.quanyoumall.ware.entity.WareSkuEntity" id="wareSkuMap">
         <result property="id" column="id"/>
         <result property="skuId" column="sku_id"/>
@@ -12,15 +12,35 @@
         <result property="skuName" column="sku_name"/>
         <result property="stockLocked" column="stock_locked"/>
     </resultMap>
+    <update id="lockStockByItem">
+        update wms_ware_sku
+        set stock_locked = stock_locked + #{count}
+        where stock - (stock_locked + #{count}) >= 0
+          and sku_id = #{skuId}
+          and ware_id = #{wareId}
+    </update>
+    <update id="rollbackSingle">
+        update wms_ware_sku
+        set stock = stock + #{wareOrderTaskDetailEntity.skuNum},stock_locked = stock_locked - #{wareOrderTaskDetailEntity.skuNum}
+        where ware_id = #{wareOrderTaskDetailEntity.wareId} and sku_id = #{wareOrderTaskDetailEntity.skuId}
+    </update>
     <select id="getStokeBySkuIds" resultType="com.wzy.quanyoumall.common.to.SkuStockTO">
         select
-            sku_id,sum(stock - stock_locked) as stockSum
+        sku_id,sum(stock - stock_locked) as stockSum
         from wms_ware_sku
         where sku_id in
-            <foreach collection="skuIds" item="skuId" open="(" separator="," close=")">
-                #{skuId}
-            </foreach>
+        <foreach collection="skuIds" item="skuId" open="(" separator="," close=")">
+            #{skuId}
+        </foreach>
         group by sku_id
+    </select>
+    <select id="listGetWareSkuIdByArgs" resultType="java.lang.Long">
+        select ware_id
+        from wms_ware_sku wws
+        where wws.sku_id = #{skuId}
+          <if test="num != null">
+              and wws.stock - wws.stock_locked - #{num} >= 0
+          </if>
     </select>
 
 

@@ -1,6 +1,6 @@
 package com.wzy.quanyoumall.search.controller;
 
-import com.wzy.quanyoumall.common.constant.bizCodeEnum;
+import com.wzy.quanyoumall.common.exception.BizCodeEnum;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.search.service.ProductSaveService;
 import com.wzy.quanyoumall.search.vo.SkuEsVo;
@@ -34,6 +34,6 @@ public class EsSaveController {
         if (flag) {
             return R.ok();
         }
-        return R.error(bizCodeEnum.PRODUCT_UP_EXCEPTION.getCode(), bizCodeEnum.PRODUCT_UP_EXCEPTION.getMsg());
+        return R.error(BizCodeEnum.PRODUCT_UP_EXCEPTION.getCode(), BizCodeEnum.PRODUCT_UP_EXCEPTION.getMsg());
     }
 }

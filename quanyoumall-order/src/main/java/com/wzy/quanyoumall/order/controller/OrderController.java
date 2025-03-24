@@ -37,6 +37,12 @@ public class OrderController {
         return R.ok().put("order", order);
     }
 
+    @GetMapping("/info/{orderSn}")
+    public R infoBySn(@PathVariable("orderSn") String orderSn) {
+        OrderEntity order = orderService.getByOrderSn(orderSn);
+        return R.ok().put("data", order);
+    }
+
     /**
      * 保存
      */

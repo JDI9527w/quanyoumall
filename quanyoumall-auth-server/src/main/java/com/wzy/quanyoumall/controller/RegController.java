@@ -1,7 +1,7 @@
 package com.wzy.quanyoumall.controller;
 
 import com.wzy.quanyoumall.common.constant.AuthServerConstant;
-import com.wzy.quanyoumall.common.constant.bizCodeEnum;
+import com.wzy.quanyoumall.common.exception.BizCodeEnum;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.feign.MemberFeignService;
 import com.wzy.quanyoumall.feign.ThirdPartyFeignService;
@@ -43,7 +43,7 @@ public class RegController {
         Long expire = stringRedisTemplate.getExpire(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phone, TimeUnit.SECONDS);
         if (expire != null) {
             if (expire > 9 * 60L) {
-                return R.error(bizCodeEnum.SMS_CODE_EXCEPTION.getCode(), bizCodeEnum.SMS_CODE_EXCEPTION.getMsg());
+                return R.error(BizCodeEnum.SMS_CODE_EXCEPTION.getCode(), BizCodeEnum.SMS_CODE_EXCEPTION.getMsg());
             }
         }
         // 生成一个0到99999之间的随机数

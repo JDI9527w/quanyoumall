@@ -10,7 +10,7 @@ import java.util.Map;
 public class OrderConfirmVo {
 
     /**
-     * 会员收获地址列表
+     * 会员收货地址列表
      **/
     private List<MemberAddressVo> memberAddressVos;
 

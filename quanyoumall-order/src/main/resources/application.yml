@@ -9,20 +9,26 @@ spring:
     url: jdbc:mysql://8.152.219.128:3306/quanyoumall_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password:
+
   rabbitmq:
     host: 8.152.219.128
     port: 5672
     username:
     password:
     virtual-host: quanyoumall
-    publisher-confirm-type: CORRELATED
+    listener:
+      simple:
+        acknowledge-mode: manual
+
   cloud:
     nacos:
       discovery:
         server-addr: localhost:8848
+
   redis:
     host: 8.152.219.128
     port: 6379
+
   session:
     store-type: redis
 

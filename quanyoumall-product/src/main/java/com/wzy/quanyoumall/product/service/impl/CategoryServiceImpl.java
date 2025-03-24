@@ -2,7 +2,7 @@ package com.wzy.quanyoumall.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.wzy.quanyoumall.common.constant.bizCodeEnum;
+import com.wzy.quanyoumall.common.exception.BizCodeEnum;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.common.utils.TreeUtil;
 import com.wzy.quanyoumall.product.entity.*;
@@ -52,20 +52,20 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
         // 检查有无商品关联
         List<SpuInfoEntity> spuRelationList = spuInfoService.list(new QueryWrapper<SpuInfoEntity>().in("catalog_id", ids));
         if (brandRelationList != null) {
-            return R.error(bizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getCode(),
-                    bizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getMsg() + "有品牌与此分类关联,无法删除,请解除关联后再试");
+            return R.error(BizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getCode(),
+                    BizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getMsg() + "有品牌与此分类关联,无法删除,请解除关联后再试");
         }
         if (attrRelationList != null) {
-            return R.error(bizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getCode(),
-                    bizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getMsg() + "有属性与此分类关联,无法删除,请解除关联后再试");
+            return R.error(BizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getCode(),
+                    BizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getMsg() + "有属性与此分类关联,无法删除,请解除关联后再试");
         }
         if (skuRelationList != null) {
-            return R.error(bizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getCode(),
-                    bizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getMsg() + "有商品与此分类关联,无法删除,请解除关联后再试");
+            return R.error(BizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getCode(),
+                    BizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getMsg() + "有商品与此分类关联,无法删除,请解除关联后再试");
         }
         if (spuRelationList != null) {
-            return R.error(bizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getCode(),
-                    bizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getMsg() + "有商品与此分类关联,无法删除,请解除关联后再试");
+            return R.error(BizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getCode(),
+                    BizCodeEnum.PRODUCT_CATALOG_DEL_EXCEPTION.getMsg() + "有商品与此分类关联,无法删除,请解除关联后再试");
         }
         baseMapper.deleteBatchIds(ids);
         return R.ok();

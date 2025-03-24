@@ -10,6 +10,7 @@ import com.wzy.quanyoumall.to.SkuInfoTo;
 import com.wzy.quanyoumall.vo.CartItemVo;
 import com.wzy.quanyoumall.vo.CartVo;
 import com.wzy.quanyoumall.vo.UserInfoVo;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class CartServiceImpl implements CartService {
             // 商品信息
             CompletableFuture<Void> skuTask = CompletableFuture.runAsync(() -> {
                 R res = productFeignService.info(skuId);
-                SkuInfoTo skuInfo = res.getData("skuInfo", new TypeReference<SkuInfoTo>() {
+                SkuInfoTo skuInfo = res.getData(new TypeReference<SkuInfoTo>() {
                 });
                 cartItemVo.setImage(skuInfo.getSkuDefaultImg());
                 cartItemVo.setTitle(skuInfo.getSkuTitle());
@@ -87,20 +88,16 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartVo getCartByUser(UserInfoVo userInfoVo) {
         Long userId = userInfoVo.getUserId();
-        BoundHashOperations<String, Object, Object> boundHashOps = redisTemplate.boundHashOps(CART_PREFIX + userId);
-        List<Object> values = boundHashOps.values();
-        List<CartItemVo> res = values.stream().map(item -> {
-            String cartItemString = item.toString();
-            CartItemVo cartItemVo = JSON.parseObject(cartItemString, CartItemVo.class);
-            return cartItemVo;
-        }).collect(Collectors.toList());
+        List<CartItemVo> res = this.listGetUserCartItem(userId);
         CartVo cartVo = new CartVo();
-        cartVo.setItems(res);
-        Integer itemCount = res.stream().map(CartItemVo::getCount).collect(Collectors.toList()).stream().reduce(0, Integer::sum);
-        BigDecimal priceSum = res.stream().map(CartItemVo::getTotalPrice).collect(Collectors.toList()).stream().reduce(new BigDecimal("0"), BigDecimal::add);
-        cartVo.setCountNum(itemCount);
+        if (ObjectUtils.isNotEmpty(res)) {
+            cartVo.setItems(res);
+            Integer itemCount = res.stream().map(CartItemVo::getCount).collect(Collectors.toList()).stream().reduce(0, Integer::sum);
+            BigDecimal priceSum = res.stream().map(CartItemVo::getTotalPrice).collect(Collectors.toList()).stream().reduce(new BigDecimal("0"), BigDecimal::add);
+            cartVo.setCountNum(itemCount);
 //        cartVo.setCountType();
-        cartVo.setTotalAmount(priceSum);
+            cartVo.setTotalAmount(priceSum);
+        }
         return cartVo;
     }
 
@@ -121,5 +118,25 @@ public class CartServiceImpl implements CartService {
         Long userId = userInfoVo.getUserId();
         BoundHashOperations<String, Object, Object> boundHashOps = redisTemplate.boundHashOps(CART_PREFIX + userId);
         boundHashOps.delete(skuId.toString());
+    }
+
+    @Override
+    public List<CartItemVo> listGetUserCartItem(Long memberId) {
+        BoundHashOperations<String, Object, Object> boundHashOps = redisTemplate.boundHashOps(CART_PREFIX + memberId);
+        List<Object> values = boundHashOps.values();
+        if (values != null) {
+            List<CartItemVo> res = values.stream().map(item -> {
+                String cartItemString = item.toString();
+                return JSON.parseObject(cartItemString, CartItemVo.class);
+            }).collect(Collectors.toList());
+            return res;
+        }
+        return null;
+    }
+
+    @Override
+    public List<CartItemVo> listGetCheckedItems(Long memberId) {
+        List<CartItemVo> cartItemVos = this.listGetUserCartItem(memberId);
+        return cartItemVos.stream().filter(CartItemVo::getCheck).collect(Collectors.toList());
     }
 }

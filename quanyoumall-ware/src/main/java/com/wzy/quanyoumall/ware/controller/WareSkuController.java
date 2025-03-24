@@ -1,10 +1,13 @@
 package com.wzy.quanyoumall.ware.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wzy.quanyoumall.common.exception.BizCodeEnum;
 import com.wzy.quanyoumall.common.to.SkuStockTO;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.ware.entity.WareSkuEntity;
 import com.wzy.quanyoumall.ware.service.WareSkuService;
+import com.wzy.quanyoumall.ware.vo.FareVo;
+import com.wzy.quanyoumall.ware.vo.WareSkuLockVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,4 +87,17 @@ public class WareSkuController {
         return R.ok();
     }
 
+    @GetMapping("/fare/{addrId}")
+    public FareVo getFareByAddrId(@PathVariable("addrId") Long addrId) {
+        return wareSkuService.getFareByAddrId(addrId);
+    }
+
+    @PostMapping("/lockStock")
+    public R lockStockByLockVo(@RequestBody WareSkuLockVo lockVo) {
+        boolean flag = wareSkuService.lockStockByLockVo(lockVo);
+        if (flag) {
+            return R.ok();
+        }
+        return R.error(BizCodeEnum.OUT_OF_STOCK_EXCEPTION.getCode(), BizCodeEnum.OUT_OF_STOCK_EXCEPTION.getMsg());
+    }
 }

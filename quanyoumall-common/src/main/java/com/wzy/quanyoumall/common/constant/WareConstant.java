@@ -44,4 +44,25 @@ public class WareConstant {
             return msg;
         }
     }
+
+    public enum OrderTaskDetailStatusEnum {
+        LOCKED(1, "已锁定"),
+        UNLOCKED(2, "已解锁"),
+        DEDUCTED(3, "已扣减");
+        private int code;
+        private String msg;
+
+        OrderTaskDetailStatusEnum(int code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+    }
 }

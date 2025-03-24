@@ -1,14 +1,14 @@
 package com.wzy.quanyoumall.member.controller;
 
-import com.wzy.quanyoumall.common.constant.bizCodeEnum;
+import com.wzy.quanyoumall.common.exception.BizCodeEnum;
 import com.wzy.quanyoumall.common.exception.PhoneExistException;
 import com.wzy.quanyoumall.common.exception.UsernameExistException;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.member.entity.MemberEntity;
 import com.wzy.quanyoumall.member.service.MemberService;
-import com.wzy.quanyoumall.member.vo.SocialAccountVo;
 import com.wzy.quanyoumall.member.vo.MemberLoginVo;
 import com.wzy.quanyoumall.member.vo.MemberRegisterVo;
+import com.wzy.quanyoumall.member.vo.SocialAccountVo;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -80,10 +80,10 @@ public class MemberController {
             memberService.register(memberRegisterVo);
         } catch (UsernameExistException e) {
             e.printStackTrace();
-            return R.error(bizCodeEnum.USER_EXIST_EXCEPTION.getCode(), bizCodeEnum.USER_EXIST_EXCEPTION.getMsg());
+            return R.error(BizCodeEnum.USER_EXIST_EXCEPTION.getCode(), BizCodeEnum.USER_EXIST_EXCEPTION.getMsg());
         } catch (PhoneExistException e) {
             e.printStackTrace();
-            return R.error(bizCodeEnum.PHONE_EXIST_EXCEPTION.getCode(), bizCodeEnum.PHONE_EXIST_EXCEPTION.getMsg());
+            return R.error(BizCodeEnum.PHONE_EXIST_EXCEPTION.getCode(), BizCodeEnum.PHONE_EXIST_EXCEPTION.getMsg());
         }
         return R.ok();
     }
@@ -92,14 +92,15 @@ public class MemberController {
     public R checkMember(@RequestBody MemberLoginVo memberLoginVo) {
         MemberEntity loginUser = memberService.login(memberLoginVo);
         if (ObjectUtils.isNotEmpty(loginUser)) {
-            return R.ok().put("data",loginUser);
+            return R.ok().put("data", loginUser);
         }
-        return R.error(bizCodeEnum.CHECK_USER_ERROR_EXCEPTION.getCode(), bizCodeEnum.CHECK_USER_ERROR_EXCEPTION.getMsg());
+        return R.error(BizCodeEnum.CHECK_USER_ERROR_EXCEPTION.getCode(), BizCodeEnum.CHECK_USER_ERROR_EXCEPTION.getMsg());
     }
+
     @PostMapping("/loginBySocial")
-    public R loginBySocialAccount(@RequestBody SocialAccountVo socialAccountVo){
+    public R loginBySocialAccount(@RequestBody SocialAccountVo socialAccountVo) {
         MemberEntity memberEntity = memberService.loginBySocialAccount(socialAccountVo);
-        return R.ok().put("data",memberEntity);
+        return R.ok().put("data", memberEntity);
     }
 
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -23,8 +24,13 @@ public class MemberReceiveAddressController {
     private MemberReceiveAddressService memberReceiveAddressService;
 
     /**
-     * 列表
+     * 通过用户id查询收货地址列表
      */
+    @ResponseBody
+    @GetMapping("/listGetMemberReceiveAddr/{memberId}")
+    public List<MemberReceiveAddressEntity> listGetMemberReceiveAddr(@PathVariable("memberId") Long memberId) {
+        return memberReceiveAddressService.listGetMemberReceiveAddrByMemberId(memberId);
+    }
 
 
     /**
@@ -33,8 +39,7 @@ public class MemberReceiveAddressController {
     @RequestMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
         MemberReceiveAddressEntity memberReceiveAddress = memberReceiveAddressService.getById(id);
-
-        return R.ok().put("memberReceiveAddress", memberReceiveAddress);
+        return R.ok().put("data", memberReceiveAddress);
     }
 
     /**
@@ -43,7 +48,6 @@ public class MemberReceiveAddressController {
     @PostMapping("/save")
     public R save(@RequestBody MemberReceiveAddressEntity memberReceiveAddress) {
         memberReceiveAddressService.save(memberReceiveAddress);
-
         return R.ok();
     }
 
@@ -53,7 +57,6 @@ public class MemberReceiveAddressController {
     @PutMapping("/update")
     public R update(@RequestBody MemberReceiveAddressEntity memberReceiveAddress) {
         memberReceiveAddressService.updateById(memberReceiveAddress);
-
         return R.ok();
     }
 
@@ -63,7 +66,6 @@ public class MemberReceiveAddressController {
     @DeleteMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
         memberReceiveAddressService.removeByIds(Arrays.asList(ids));
-
         return R.ok();
     }
 

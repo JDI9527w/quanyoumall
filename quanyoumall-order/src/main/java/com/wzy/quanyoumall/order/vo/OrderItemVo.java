@@ -1,11 +1,16 @@
 package com.wzy.quanyoumall.order.vo;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * 订单项
+ */
 @Data
+@ToString
 public class OrderItemVo {
     private Long skuId;
 
@@ -26,6 +31,8 @@ public class OrderItemVo {
 
     private BigDecimal totalPrice;
 
-    /** 商品重量 **/
+    /**
+     * 商品重量
+     **/
     private BigDecimal weight = new BigDecimal("0.085");
 }

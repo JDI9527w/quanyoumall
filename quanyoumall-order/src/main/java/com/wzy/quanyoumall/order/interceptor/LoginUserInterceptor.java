@@ -3,6 +3,7 @@ package com.wzy.quanyoumall.order.interceptor;
 import com.wzy.quanyoumall.common.constant.AuthServerConstant;
 import com.wzy.quanyoumall.common.vo.MemberRespVo;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,12 @@ public class LoginUserInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String requestURI = request.getRequestURI();
+        AntPathMatcher matcher = new AntPathMatcher();
+        boolean match1 = matcher.match("/order/order/**", requestURI);
+        boolean match2 = matcher.match("/payed/**", requestURI);
+        if (match1 || match2) return true;
+
         MemberRespVo member = (MemberRespVo) request.getSession().getAttribute(AuthServerConstant.LOGIN_USER);
         if (ObjectUtils.isNotEmpty(member)) {
             loginUser.set(member);

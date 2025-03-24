@@ -83,4 +83,10 @@ public class SpuInfoController {
         spuInfoService.upSpuById(spuId);
         return R.ok();
     }
+
+    @GetMapping("/spuInfo")
+    public R getSpuInfoBySkuId(@RequestParam("skuId") Long skuId) {
+        SpuInfoEntity spuInfoEntity = spuInfoService.getSpuInfoBySkuId(skuId);
+        return R.ok().put("data", spuInfoEntity);
+    }
 }
