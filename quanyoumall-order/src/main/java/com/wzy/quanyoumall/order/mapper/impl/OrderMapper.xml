@@ -48,6 +48,17 @@
         <result property="commentTime" column="comment_time"/>
         <result property="modifyTime" column="modify_time"/>
     </resultMap>
+    <select id="pageByQueryParam" resultType="com.wzy.quanyoumall.order.entity.OrderEntity">
+        select distinct oo.*
+            from oms_order oo
+            left join oms_order_item ooi on oo.order_sn = ooi.order_sn
+            where oo.member_id = #{memberId}
+                <if test="queryParam != null and queryParam != ''">
+                   and oo.order_sn like concat('%',#{queryParam},'%')
+                    or ooi.sku_name like concat('%',#{queryParam},'%')
+                </if>
+            order by oo.create_time desc
+    </select>
 
 
 </mapper>

@@ -45,4 +45,13 @@ public class MyRabbitConfig {
     public Binding bindingReleaseQueue(TopicExchange topicExchange, Queue orderReleaseQueue) {
         return BindingBuilder.bind(orderReleaseQueue).to(topicExchange).with("order.release.order");
     }
+
+    @Bean
+    public Binding bindingReleaseOtherQueue() {
+        return new Binding("stock.release.queue",
+                Binding.DestinationType.QUEUE,
+                "order.event.exchange",
+                "order.release.other.#",
+                null);
+    }
 }

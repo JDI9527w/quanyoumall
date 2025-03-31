@@ -1,5 +1,6 @@
 package com.wzy.quanyoumall.ware.to;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
  * @date 2025-01-05 21:37:50
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderTo {
     /**
      * id

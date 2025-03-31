@@ -33,4 +33,9 @@ public class WareOrderTaskServiceImpl extends ServiceImpl<WareOrderTaskMapper, W
         }
         return baseMapper.selectPage(page, queryWrapper);
     }
+
+    @Override
+    public WareOrderTaskEntity getTaskByOrderSn(String orderSn) {
+        return baseMapper.selectOne(new QueryWrapper<WareOrderTaskEntity>().eq("order_sn", orderSn).last("limit 1"));
+    }
 }

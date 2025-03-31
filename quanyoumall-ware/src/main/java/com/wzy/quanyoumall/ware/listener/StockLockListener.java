@@ -8,6 +8,7 @@ import com.wzy.quanyoumall.ware.entity.WareOrderTaskDetailEntity;
 import com.wzy.quanyoumall.ware.entity.WareOrderTaskEntity;
 import com.wzy.quanyoumall.ware.feign.OrderFeignService;
 import com.wzy.quanyoumall.ware.service.WareOrderTaskDetailService;
+import com.wzy.quanyoumall.ware.service.WareOrderTaskService;
 import com.wzy.quanyoumall.ware.service.WareSkuService;
 import com.wzy.quanyoumall.ware.to.OrderTo;
 import org.apache.commons.lang3.ObjectUtils;
@@ -29,9 +30,11 @@ public class StockLockListener {
     private WareSkuService wareSkuService;
     @Autowired
     private OrderFeignService orderFeignService;
+    @Autowired
+    private WareOrderTaskService wareOrderTaskService;
 
     @RabbitHandler
-    public void receiveMsg(WareOrderTaskEntity wareOrderTaskEntity, Message message, Channel channel) throws IOException {
+    public void handlerSotck(WareOrderTaskEntity wareOrderTaskEntity, Message message, Channel channel) throws IOException {
         try {
             System.out.println("消费库存消息............");
             R r = orderFeignService.infoBySn(wareOrderTaskEntity.getOrderSn());
@@ -46,6 +49,23 @@ public class StockLockListener {
             if (ObjectUtils.isEmpty(order)) {
                 // 订单不存在,直接释放库存
                 List<WareOrderTaskDetailEntity> taskDetailEntityList = orderTaskDetailService.listByTaskId(wareOrderTaskEntity.getId());
+                wareSkuService.rollbackStock(taskDetailEntityList);
+            }
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+        }
+    }
+
+    @RabbitHandler
+    public void handlerOrder(String orderSn, Message message, Channel channel) throws IOException {
+        System.out.println("消费订单关闭消息");
+        // 订单已经创建,通过订单sn查找库存任务,释放库存
+        try {
+            WareOrderTaskEntity taskEntity = wareOrderTaskService.getTaskByOrderSn(orderSn);
+            if (ObjectUtils.isNotEmpty(taskEntity)) {
+                List<WareOrderTaskDetailEntity> taskDetailEntityList = orderTaskDetailService.listByTaskId(taskEntity.getId());
                 wareSkuService.rollbackStock(taskDetailEntityList);
             }
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);

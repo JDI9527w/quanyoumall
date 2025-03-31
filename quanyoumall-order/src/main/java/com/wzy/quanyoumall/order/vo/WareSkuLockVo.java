@@ -8,7 +8,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class WareSkuLockVo {
-    private String OrderSn;
+    private Long orderId;
+
+    private String orderSn;
 
     private List<OrderItemVo> locks;
 }

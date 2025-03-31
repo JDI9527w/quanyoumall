@@ -21,6 +21,7 @@ public class MyRabbitConfig {
     public Queue stockDelayQueue() {
         Map<String, Object> argsMap = new HashMap<>();
 //        argsMap.put("x-message-ttl", 1860000);
+        // 库存解锁可以比订单解锁慢一些.
         argsMap.put("x-message-ttl", 80000);
         argsMap.put("x-dead-letter-exchange", "stock.event.exchange");
         argsMap.put("x-dead-letter-routing-key", "stock.release.stock");

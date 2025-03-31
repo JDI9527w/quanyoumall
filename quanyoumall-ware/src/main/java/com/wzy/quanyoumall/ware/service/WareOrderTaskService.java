@@ -14,5 +14,13 @@ import com.wzy.quanyoumall.ware.entity.WareOrderTaskEntity;
 public interface WareOrderTaskService extends IService<WareOrderTaskEntity> {
 
     Page<WareOrderTaskEntity> queryPage(WareOrderTaskEntity wareOrderTaskEntity, Page<WareOrderTaskEntity> page);
+
+    /**
+     * 通过订单号获取库存工作单
+     *
+     * @param orderSn
+     * @return
+     */
+    WareOrderTaskEntity getTaskByOrderSn(String orderSn);
 }
 

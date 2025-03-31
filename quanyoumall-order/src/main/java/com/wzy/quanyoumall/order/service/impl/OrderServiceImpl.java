@@ -3,14 +3,17 @@ package com.wzy.quanyoumall.order.service.impl;
 import com.alibaba.fastjson2.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.wzy.quanyoumall.common.exception.BizCodeEnum;
 import com.wzy.quanyoumall.common.constant.OrderConstant;
 import com.wzy.quanyoumall.common.constant.OrderStatusEnum;
+import com.wzy.quanyoumall.common.exception.BizCodeEnum;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.common.vo.MemberRespVo;
+import com.wzy.quanyoumall.order.constant.PayTypeConstant;
 import com.wzy.quanyoumall.order.entity.OrderEntity;
 import com.wzy.quanyoumall.order.entity.OrderItemEntity;
+import com.wzy.quanyoumall.order.entity.PaymentInfoEntity;
 import com.wzy.quanyoumall.order.feign.CartFeignService;
 import com.wzy.quanyoumall.order.feign.MemberFeignService;
 import com.wzy.quanyoumall.order.feign.ProductFeignService;
@@ -19,6 +22,7 @@ import com.wzy.quanyoumall.order.interceptor.LoginUserInterceptor;
 import com.wzy.quanyoumall.order.mapper.OrderMapper;
 import com.wzy.quanyoumall.order.service.OrderItemService;
 import com.wzy.quanyoumall.order.service.OrderService;
+import com.wzy.quanyoumall.order.service.PaymentInfoService;
 import com.wzy.quanyoumall.order.to.OrderCreateTo;
 import com.wzy.quanyoumall.order.to.SpuInfoTo;
 import com.wzy.quanyoumall.order.vo.*;
@@ -28,6 +32,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -53,6 +58,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
     private OrderItemService orderItemService;
     @Autowired
     private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private PaymentInfoService paymentInfoService;
 
     @Override
     public OrderConfirmVo confirmOrder() {
@@ -98,7 +105,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
                 return orderItemVo;
             }).collect(Collectors.toList());
             // 锁定库存
-            R lockRes = wareFeignService.lockStockByLockVo(new WareSkuLockVo(orderCreateTo.getOrder().getOrderSn(), itemvos));
+            OrderEntity order = orderCreateTo.getOrder();
+            R lockRes = wareFeignService.lockStockByLockVo(new WareSkuLockVo(order.getId(), order.getOrderSn(), itemvos));
             if (lockRes.getCode() == 0) {
                 // 锁成功
                 // 发送订单信息
@@ -119,8 +127,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
     }
 
     private void saveOrder(OrderCreateTo orderCreateTo) {
-        this.save(orderCreateTo.getOrder());
-        orderItemService.saveBatch(orderCreateTo.getOrderItems());
+        OrderEntity order = orderCreateTo.getOrder();
+        this.save(order);
+        List<OrderItemEntity> orderItems = orderCreateTo.getOrderItems();
+        orderItems.forEach(item -> {
+            item.setOrderId(order.getId());
+        });
+        orderItemService.saveBatch(orderItems);
     }
 
     /**
@@ -262,9 +275,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
     public void closeOrder(OrderEntity orderEntity) {
         OrderEntity byId = this.getById(orderEntity.getId());
         if (byId != null && byId.getStatus().equals(OrderStatusEnum.CREATE_NEW.getCode())) {
-            // 30分钟后接收到消息,如果订单状态为未支付,则取消订单.
+            // x 分钟后接收到消息,如果订单状态为未支付,则取消订单.
             byId.setStatus(OrderStatusEnum.CANCLED.getCode());
             this.updateById(byId);
+            // 订单取消后应该主动发消息给库存，释放库存,修改释放库存逻辑,不判断订单状态,直接根据消息内容修改库存
+            rabbitTemplate.convertAndSend("order.event.exchange", "order.release.other.#", orderEntity.getOrderSn());
             // TODO:返还优惠券等
         }
     }
@@ -273,5 +288,63 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
     public OrderEntity getByOrderSn(String orderSn) {
         OrderEntity orderEntity = this.getOne(new QueryWrapper<OrderEntity>().eq("order_sn", orderSn));
         return orderEntity;
+    }
+
+    @Override
+    public PayVo aliPayOrder(String orderSn) {
+        OrderEntity orderEntity = getByOrderSn(orderSn);
+        PayVo payVo = new PayVo();
+        OrderItemEntity orderItem = orderItemService.getOne(new QueryWrapper<OrderItemEntity>().eq("order_sn", orderEntity.getOrderSn()).last("LIMIT 1"));
+        payVo.setOut_trade_no(orderEntity.getOrderSn());
+        payVo.setSubject(orderItem.getSpuName());
+//        payVo.setBody(orderItem.getSkuName());
+        BigDecimal payAmount = orderEntity.getPayAmount().setScale(2, BigDecimal.ROUND_UP);
+//        支付宝要求2位小数，数据库存四位，导致请求参数错误。
+//        payVo.setTotal_amount(orderEntity.getPayAmount().toString());
+        payVo.setTotal_amount(payAmount.toString());
+        return payVo;
+    }
+
+    @Override
+    public Page<OrderEntity> pageByQueryParam(Page<OrderEntity> objectPage, String queryParam) {
+        MemberRespVo memberRespVo = LoginUserInterceptor.loginUser.get();
+        Page<OrderEntity> orderEntityPage = this.baseMapper.pageByQueryParam(objectPage, queryParam, memberRespVo.getId());
+        if (!CollectionUtils.isEmpty(orderEntityPage.getRecords())) {
+            orderEntityPage.getRecords().forEach(orderEntity -> {
+                List<OrderItemEntity> orderItemEntities = orderItemService.list(new QueryWrapper<OrderItemEntity>().eq("order_sn", orderEntity.getOrderSn()));
+                orderEntity.setItems(orderItemEntities);
+            });
+        }
+        return orderEntityPage;
+    }
+
+    @Override
+    public void changeStatusBySn(String orderSn, Integer statusCode, Integer payType) {
+        OrderEntity orderEntity = this.getByOrderSn(orderSn);
+        orderEntity.setStatus(statusCode);
+        orderEntity.setPayType(payType);
+        this.updateById(orderEntity);
+    }
+
+    @Override
+    public String handlerPayResult(PayAsyncVo payAsyncVo) {
+        try {
+            // 支付信息
+            PaymentInfoEntity paymentInfoEntity = new PaymentInfoEntity();
+            OrderEntity order = this.getByOrderSn(payAsyncVo.getOut_trade_no());
+            paymentInfoEntity.setOrderId(order.getId());
+            paymentInfoEntity.setAlipayTradeNo(payAsyncVo.getTrade_no());
+            paymentInfoEntity.setOrderSn(payAsyncVo.getOut_trade_no());
+            paymentInfoEntity.setPaymentStatus(payAsyncVo.getTrade_status());
+            paymentInfoEntity.setTotalAmount(new BigDecimal(payAsyncVo.getTotal_amount()));
+            paymentInfoService.save(paymentInfoEntity);
+            // 修改订单状态
+            if (payAsyncVo.getTrade_status().equals("TRADE_SUCCESS") || payAsyncVo.getTrade_status().equals("TRADE_FINISHED")) {
+                this.changeStatusBySn(payAsyncVo.getOut_trade_no(), OrderStatusEnum.PAYED.getCode(), PayTypeConstant.ALIPAY);
+            }
+            return "success";
+        } catch (Exception e) {
+            return "error";
+        }
     }
 }

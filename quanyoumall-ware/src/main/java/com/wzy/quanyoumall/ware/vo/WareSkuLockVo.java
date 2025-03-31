@@ -6,7 +6,9 @@ import java.util.List;
 
 @Data
 public class WareSkuLockVo {
-    private String OrderSn;
+    private Long orderId;
+
+    private String orderSn;
 
     private List<OrderItemVo> locks;
 }

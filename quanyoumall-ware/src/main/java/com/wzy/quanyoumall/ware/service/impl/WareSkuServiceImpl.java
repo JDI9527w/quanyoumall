@@ -93,6 +93,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
         boolean flag = true;
         WareOrderTaskEntity wareOrderTaskEntity = new WareOrderTaskEntity();
         wareOrderTaskEntity.setOrderSn(lockVo.getOrderSn());
+        wareOrderTaskEntity.setOrderId(lockVo.getOrderId());
         wareOrderTaskService.save(wareOrderTaskEntity);
         List<OrderItemVo> locks = lockVo.getLocks();
         for (OrderItemVo lock : locks) {
@@ -113,7 +114,6 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
                 break;
             }
         }
-        // TODO:测试消息队列联通
         rabbitTemplate.convertAndSend("stock.event.exchange", "stock.finish", wareOrderTaskEntity);
         return flag;
     }
@@ -157,6 +157,12 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
         wareOrderTaskDetailService.updateBatchById(taskDetailList);
     }
 
+    /**
+     * 解锁锁定的库存
+     *
+     * @param wareOrderTaskDetailEntity
+     * @return
+     */
     @Override
     public int rollbackSingle(WareOrderTaskDetailEntity wareOrderTaskDetailEntity) {
         return baseMapper.rollbackSingle(wareOrderTaskDetailEntity);

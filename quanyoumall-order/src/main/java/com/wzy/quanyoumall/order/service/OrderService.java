@@ -1,10 +1,9 @@
 package com.wzy.quanyoumall.order.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wzy.quanyoumall.order.entity.OrderEntity;
-import com.wzy.quanyoumall.order.vo.OrderConfirmVo;
-import com.wzy.quanyoumall.order.vo.OrderSubmitVo;
-import com.wzy.quanyoumall.order.vo.SubmitOrderRespVo;
+import com.wzy.quanyoumall.order.vo.*;
 
 /**
  * 订单
@@ -43,5 +42,40 @@ public interface OrderService extends IService<OrderEntity> {
      * @return
      */
     OrderEntity getByOrderSn(String orderSn);
+
+    /**
+     * 获取支付宝支付对象
+     *
+     * @param orderSn
+     * @return
+     */
+    PayVo aliPayOrder(String orderSn);
+
+    /**
+     * 订单列表分页查询
+     *
+     * @param objectPage
+     * @param queryParam
+     * @return
+     */
+    Page<OrderEntity> pageByQueryParam(Page<OrderEntity> objectPage, String queryParam);
+
+    /**
+     * 修改订单状态
+     *
+     * @param orderSn
+     * @param statusCode
+     * @param payType
+     * @return
+     */
+    void changeStatusBySn(String orderSn, Integer statusCode, Integer payType);
+
+    /**
+     * 处理支付结果
+     *
+     * @param payAsyncVo
+     * @return
+     */
+    String handlerPayResult(PayAsyncVo payAsyncVo);
 }
 

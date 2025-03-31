@@ -1,6 +1,8 @@
 package com.wzy.quanyoumall.order.web;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.exception.BizCodeEnum;
+import com.wzy.quanyoumall.order.entity.OrderEntity;
 import com.wzy.quanyoumall.order.service.OrderService;
 import com.wzy.quanyoumall.order.vo.OrderConfirmVo;
 import com.wzy.quanyoumall.order.vo.OrderSubmitVo;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -25,12 +28,13 @@ public class OrderWebController {
      * @return
      */
     @GetMapping("/list.html")
-    public String toListWeb(Model model) {
-//        OrderCreateTo orderEntity = new OrderCreateTo();
-//        model.addAttribute("order",orderEntity);
-//        model.addAttribute("pageUtil",null);
-//        return "list";
-        return null;
+    public String toListWeb(@RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                            @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize,
+                            @RequestParam(name = "productName", required = false) String productName,
+                            Model model) {
+        Page<OrderEntity> orderEntityPage = orderService.pageByQueryParam(new Page<>(pageNum, pageSize), productName);
+        model.addAttribute("data", orderEntityPage);
+        return "list";
     }
 
     /**

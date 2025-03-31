@@ -17,7 +17,6 @@
 <body>
 <div id="nav">
     <nav>
-
         <div class="myjd">
             <h3>我的券友商城</h3>
             <button onclick="location.href='http://8.152.219.128/product/index.html'">返回券友商城首页</button>
@@ -70,7 +69,6 @@
         </div>
         <div style="clear:both;"></div>
     </nav>
-
 </div>
 <div style="clear:both;"></div>
 <div id="big">
@@ -142,8 +140,6 @@
         <div class="myOrder">
             <p>我的订单</p>
         </div>
-
-
         <div class="allBig">
             <div class="allOrder">
                 <ul class="allOrderTop">
@@ -168,7 +164,6 @@
                     </li>
                     <div class="clear:both;"></div>
                 </ul>
-
             </div>
             <div class="details">
                 <ul class="detailsUl">
@@ -203,7 +198,7 @@
                     <div style="clear:both;"></div>
                 </ul>
             </div>
-            <table class="table" th:each="order: ${pageUtil.list}">
+            <table class="table" th:each="order: ${data.records}">
                 <tr>
                     <td colspan="7" style="background:#F7F7F7">
                         <span style="color:#AAAAAA" th:text="${order.createTime}">2017-12-09 20:50:10</span>
@@ -212,8 +207,8 @@
                         <i class="table_i5 isShow"></i>
                     </td>
                 </tr>
-                <tr class="tr" th:each="item: ${order.items}">
-                    <td colspan="3">
+                <tr class="tr" th:each="item,itemStat: ${order.items}">
+                    <td colspan="3" style="border-right: 1px solid #ccc;">
                         <img style="height: 60px; width: 60px;" src="/static/order/list/img/ding.jpg"
                              th:src="${item.skuPic}" alt="" class="img">
                         <div>
@@ -224,13 +219,13 @@
                         <div style="margin-left:15px;">x[[${item.skuQuantity}]]</div>
                         <div style="clear:both"></div>
                     </td>
-                    <td>[[${order.receiverName}]]<i><i class="table_i1"></i></i></td>
-                    <td style="padding-left:10px;color:#AAAAB1;">
+                    <td th:if="${itemStat.index==0}" th:rowspan="${itemStat.size}" >[[${order.receiverName}]]<i><i class="table_i1"></i></i></td>
+                    <td th:if="${itemStat.index==0}" th:rowspan="${itemStat.size}" style="padding-left:10px;color:#AAAAB1;">
                         <p style="margin-bottom:5px;">总额 ￥[[${#numbers.formatDecimal(order.payAmount,3,2)}]]</p>
                         <hr style="width:90%;">
                         <p>在线支付</p>
                     </td>
-                    <td>
+                    <td th:if="${itemStat.index==0}" th:rowspan="${itemStat.size}">
                         <ul>
                             <li style="color:#71B247;" th:if="${order.status==0}">待付款</li>
                             <li style="color:#71B247;" th:if="${order.status==1}">已付款</li>
@@ -267,15 +262,13 @@
                             <li class="tdLi">订单详情</li>
                         </ul>
                     </td>
-                    <td>
+                    <td th:if="${itemStat.index==0}" th:rowspan="${itemStat.size}">
                         <button>确认收货</button>
                         <p style="margin:4px 0; ">取消订单</p>
                         <p>催单</p>
                     </td>
                 </tr>
             </table>
-
-
             <div class="order_btm">
                 <div>
                     <button>上一页</button>
@@ -285,7 +278,6 @@
             </div>
             <div style="clear:both;"></div>
         </div>
-
         <div class="buy">
             <div class="buy_top">
                 <div>买什么</div>
@@ -340,7 +332,7 @@
                 <dl>
                     <dt>
                         <div>流感来了，如何做好防护？</div>
-                        <p>gulimall-guliyuan</p>
+                        <p>quanyoumall-quanyouyuan</p>
                     </dt>
                     <dd class="ab_goods">
                         <div><img src="/static/order/list/img/bu2.jpg" alt=""></div>
@@ -362,7 +354,7 @@
                 <dl>
                     <dt>
                         <div>流感来了，如何做好防护？</div>
-                        <p>gulimall-guliyuan</p>
+                        <p>quanyoumall-quanyouyuan</p>
                     </dt>
                     <dd class="ab_goods">
                         <div><img src="/static/order/list/img/bu3.jpg" alt=""></div>
@@ -428,8 +420,6 @@
                     <dl>
                         <dt><img src="/static/order/list/image/lunbo3.jpg" alt=""></dt>
                         <dd>
-
-
                             <div>良品铺子鸭脖子 甜辣味真空小包装</div>
                             <div>香辣卤味零食休闲小吃熟食190g</div>
                             <p>¥21.90</p>
@@ -478,8 +468,6 @@
                     <dl>
                         <dt><img src="/static/order/list/image/live3.jpg" alt=""></dt>
                         <dd>
-
-
                             <div>良品铺子鸭脖子 甜辣味真空小包装</div>
                             <div>香辣卤味零食休闲小吃熟食190g</div>
                             <p>¥21.90</p>
@@ -544,14 +532,10 @@
             <li class="item fore3">
                 <i></i>
                 正品行货，精致服务
-
-
             </li>
             <li class="item fore4">
                 <i></i>
                 天天低价，畅选无忧
-
-
             </li>
             <div style="clear:both;"></div>
         </ul>
@@ -592,8 +576,6 @@
                     <dd>退款说明</dd>
                     <dd>返修/退换货</dd>
                     <dd>取消订单</dd>
-
-
                 </dl>
                 <dl>
                     <dt>特色服务</dt>
@@ -602,7 +584,7 @@
                     <dd>延保服务</dd>
                     <dd>券友商城E卡</dd>
                     <dd>券友商城通信</dd>
-                    <dd>券友商城gulimall+</dd>
+                    <dd>券友商城quanyoumall+</dd>
                 </dl>
             </div>
         </div>
@@ -637,7 +619,7 @@
         <a href="/static/order/list/#">违法和不良信息举报电话：4006561155</a>
     </p>
     <p class="p4">
-        <a href="/static/order/list/#">Copyright © 2004 - 2017 券友商城gulimall.com 版权所有</a>
+        <a href="/static/order/list/#">Copyright © 2004 - 2017 券友商城quanyoumall.com 版权所有</a>
         <a href="/static/order/list/#">消费者维权热线：4006067733</a>
         <a href="/static/order/list/#">经营证照</a>
     </p>
@@ -657,7 +639,6 @@
     <div style="clear: both"></div>
 </div>
 <div class="fixed">
-
     <div class="teSe">
         <ul>
             <li class="test_li1">
