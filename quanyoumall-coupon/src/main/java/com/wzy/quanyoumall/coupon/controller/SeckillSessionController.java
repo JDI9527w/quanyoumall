@@ -1,12 +1,16 @@
 package com.wzy.quanyoumall.coupon.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.coupon.entity.SeckillSessionEntity;
 import com.wzy.quanyoumall.coupon.service.SeckillSessionService;
+import com.wzy.quanyoumall.coupon.to.SeckillSessionTo;
+import com.wzy.quanyoumall.coupon.vo.SessionQueryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -23,9 +27,29 @@ public class SeckillSessionController {
     private SeckillSessionService seckillSessionService;
 
     /**
-     * 列表
+     * 列表查询
+     *
+     * @return
      */
+    @GetMapping("/list")
+    public R list(SessionQueryVo sessionQueryVo,
+                  @RequestParam Integer pageNum,
+                  @RequestParam Integer pageSize) {
+        Page<SeckillSessionEntity> page = new Page<>(pageNum, pageSize);
+        Page<SeckillSessionEntity> result = seckillSessionService.queryPage(sessionQueryVo, page);
+        return R.ok().put("data", result);
+    }
 
+    /**
+     * 获取三天的秒杀活动场次
+     *
+     * @return
+     */
+    @GetMapping("/get3DaysSeckillSession")
+    public R get3DaysSeckillSession() {
+        List<SeckillSessionTo> sessionList = seckillSessionService.get3DaysSeckillSession();
+        return R.ok().put("data", sessionList);
+    }
 
     /**
      * 信息

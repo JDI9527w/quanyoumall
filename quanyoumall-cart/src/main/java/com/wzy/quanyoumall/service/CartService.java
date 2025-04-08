@@ -1,8 +1,8 @@
 package com.wzy.quanyoumall.service;
 
-import com.wzy.quanyoumall.vo.CartItemVo;
-import com.wzy.quanyoumall.vo.CartVo;
-import com.wzy.quanyoumall.vo.UserInfoVo;
+import com.wzy.quanyoumall.authServer.vo.CartItemVo;
+import com.wzy.quanyoumall.authServer.vo.CartVo;
+import com.wzy.quanyoumall.authServer.vo.UserInfoVo;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;

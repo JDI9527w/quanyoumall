@@ -35,5 +35,13 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
      * @return
      */
     SkuItemVo getSkuDetailById(Long skuId) throws ExecutionException, InterruptedException;
+
+    /**
+     * 通过skuIds查询商品详情集合
+     *
+     * @param skuIds
+     * @return
+     */
+    List<SkuInfoEntity> queryListByIds(List<Long> skuIds);
 }
 

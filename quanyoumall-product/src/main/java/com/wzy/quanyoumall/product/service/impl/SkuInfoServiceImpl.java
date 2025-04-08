@@ -104,7 +104,15 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfoEntity
             skuItemVo.setGroupAttrs(spuItemAttrGroupVos);
         }, threadPoolExecutor);
 
-        CompletableFuture.allOf(skuImgFuture,skuItemSaleAttrFuture,spuInfoDescFuture,spuItemAttrGroupFuture).get();
+        CompletableFuture.allOf(skuImgFuture, skuItemSaleAttrFuture, spuInfoDescFuture, spuItemAttrGroupFuture).get();
         return skuItemVo;
+    }
+
+    @Override
+    public List<SkuInfoEntity> queryListByIds(List<Long> skuIds) {
+        if (ObjectUtils.isNotEmpty(skuIds)) {
+            return baseMapper.selectList(new QueryWrapper<SkuInfoEntity>().in("sku_id", skuIds));
+        }
+        return null;
     }
 }

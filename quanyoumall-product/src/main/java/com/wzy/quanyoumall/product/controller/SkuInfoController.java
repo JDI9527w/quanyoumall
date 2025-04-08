@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -36,6 +37,17 @@ public class SkuInfoController {
         return R.ok().put("data", result);
     }
 
+    /**
+     * 根据skuIds查询sku信息
+     *
+     * @param skuIds
+     * @return
+     */
+    @GetMapping("/queryListByIds")
+    public R queryListByIds(@RequestParam("skuIds") List<Long> skuIds) {
+        List<SkuInfoEntity> skus = skuInfoService.queryListByIds(skuIds);
+        return R.ok().put("data", skus);
+    }
 
     /**
      * 信息

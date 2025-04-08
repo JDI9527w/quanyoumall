@@ -1,0 +1,24 @@
+# 应用服务 WEB 访问端口
+server:
+  port: 10020
+
+spring:
+  application:
+    name: quanyoumall-seckill
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  redis:
+    host: 8.152.219.128
+    port: 6379
+  task:
+    execution:
+      pool:
+        core-size: 8
+        max-size: 15
+
+#logging:
+#  level:
+#    com.wzy.quanyoumall: debug

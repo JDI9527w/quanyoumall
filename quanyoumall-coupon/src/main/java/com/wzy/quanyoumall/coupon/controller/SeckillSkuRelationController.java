@@ -1,8 +1,10 @@
 package com.wzy.quanyoumall.coupon.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.quanyoumall.common.utils.R;
 import com.wzy.quanyoumall.coupon.entity.SeckillSkuRelationEntity;
 import com.wzy.quanyoumall.coupon.service.SeckillSkuRelationService;
+import com.wzy.quanyoumall.coupon.vo.SkuRelationQueryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +27,14 @@ public class SeckillSkuRelationController {
     /**
      * 列表
      */
-
+    @GetMapping("/list")
+    public R list(SkuRelationQueryVo skuRelationQueryVo,
+                  @RequestParam Integer pageNum,
+                  @RequestParam Integer pageSize) {
+        Page<SeckillSkuRelationEntity> page = new Page<>(pageNum, pageSize);
+        Page<SeckillSkuRelationEntity> result = seckillSkuRelationService.queryPage(skuRelationQueryVo, page);
+        return R.ok().put("data", result);
+    }
 
     /**
      * 信息

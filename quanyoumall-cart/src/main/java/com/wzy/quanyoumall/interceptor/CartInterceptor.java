@@ -1,8 +1,8 @@
 package com.wzy.quanyoumall.interceptor;
 
+import com.wzy.quanyoumall.authServer.vo.UserInfoVo;
 import com.wzy.quanyoumall.common.constant.AuthServerConstant;
 import com.wzy.quanyoumall.common.vo.MemberRespVo;
-import com.wzy.quanyoumall.vo.UserInfoVo;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 

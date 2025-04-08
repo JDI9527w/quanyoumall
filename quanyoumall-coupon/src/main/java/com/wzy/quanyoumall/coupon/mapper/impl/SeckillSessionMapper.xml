@@ -13,5 +13,12 @@
         <result property="createTime" column="create_time"/>
     </resultMap>
 
+    <select id="select3DaysSeckillSession" resultType="com.wzy.quanyoumall.coupon.to.SeckillSessionTo">
+        select *
+        from sms_seckill_session
+        where start_time &gt;= #{startTime}
+            and start_time &lt;= #{endTime}
+    </select>
+
 
 </mapper>

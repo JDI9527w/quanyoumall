@@ -588,13 +588,13 @@
     window.location.href="http://8.152.219.128/es/search/list.html?keyword="+keyword;
   }
 
-  $.get("http://seckill.gulimall.com/getCurrentSeckillSkus", function (res) {
+  $.get("http://8.152.219.128/seckill/getCurrentSeckillSku", function (res) {
     if (res.data.length > 0) {
       res.data.forEach(function (item) {
-        $("<li onclick='toDetail(" + item.skuId + ")'></li>").append($("<img style='width: 130px; height: 130px' src='" + item.skuInfo.skuDefaultImg + "' />"))
-                .append($("<p>"+item.skuInfo.skuTitle+"</p>"))
+        $("<li onclick='toDetail(" + item.skuId + ")'></li>").append($("<img style='width: 130px; height: 130px' src='" + item.skuInfoTo.skuDefaultImg + "' />"))
+                .append($("<p>"+item.skuInfoTo.skuTitle+"</p>"))
                 .append($("<span>" + item.seckillPrice + "</span>"))
-                .append($("<s>" + item.skuInfo.price + "</s>"))
+                .append($("<s>" + item.skuInfoTo.price + "</s>"))
                 .appendTo("#seckillSkuContent");
       })
     }
